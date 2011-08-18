@@ -1,0 +1,63 @@
+---
+abstract: 'Interact with a remote Pinto repository'
+author:
+  - 'Jeffrey Ryan Thalhammer <jeff@imaginative-software.com>'
+build_requires:
+  File::Find: 0
+  File::Temp: 0
+  Module::Build: 0.3601
+  Test::More: 0
+configure_requires:
+  Module::Build: 0.3601
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.200012, CPAN::Meta::Converter version 2.110930'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Pinto-Remote
+no_index:
+  directory:
+    - t
+    - xt
+    - examples
+    - corpus
+provides:
+  App::Pinto::Remote:
+    file: lib/App/Pinto/Remote.pm
+    version: 0.001
+  App::Pinto::Remote::Command:
+    file: lib/App/Pinto/Remote/Command.pm
+    version: 0.001
+  App::Pinto::Remote::Command::add:
+    file: lib/App/Pinto/Remote/Command/add.pm
+    version: 0.001
+  App::Pinto::Remote::Command::list:
+    file: lib/App/Pinto/Remote/Command/list.pm
+    version: 0.001
+  App::Pinto::Remote::Command::remove:
+    file: lib/App/Pinto/Remote/Command/remove.pm
+    version: 0.001
+  Pinto::Remote:
+    file: lib/Pinto/Remote.pm
+    version: 0.001
+  Pinto::Remote::Config:
+    file: lib/Pinto/Remote/Config.pm
+    version: 0.001
+  Pinto::Remote::Response:
+    file: lib/Pinto/Remote/Response.pm
+    version: 0.001
+requires:
+  App::Cmd::Setup: 0
+  LWP::UserAgent: 0
+  Moose: 0
+  MooseX::Types::Moose: 0
+  Pinto::Config: 0.012
+  Pinto::Role::Configurable: 0.012
+  Pinto::Types: 0
+  namespace::autoclean: 0
+  perl: 5.006
+resources:
+  homepage: https://github.com/thaljef/Pinto-Remote
+  repository: https://github.com/thaljef/Pinto-Remote
+version: 0.001
