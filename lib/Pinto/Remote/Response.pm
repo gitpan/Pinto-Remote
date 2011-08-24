@@ -10,7 +10,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.017'; # VERSION
 
 #------------------------------------------------------------------------------
 # Moose attributes
@@ -21,7 +21,7 @@ has status => (
     required => 1,
 );
 
-has message => (
+has content => (
     is      => 'ro',
     isa     => Str,
 );
@@ -45,7 +45,7 @@ Pinto::Remote::Response - Represents the response received from a Pinto::Server
 
 =head1 VERSION
 
-version 0.001
+version 0.017
 
 =head1 AUTHOR
 

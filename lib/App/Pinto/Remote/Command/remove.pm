@@ -10,7 +10,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.017'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -33,8 +33,8 @@ sub validate_args {
 
 sub execute {
     my ( $self, $opts, $args ) = @_;
-    my $result = $self->pinto_remote( $opts )->remove( package => $args->[0] );
-    print $result->message();
+    my $result = $self->pinto_remote->remove( %{$opts}, package => $args->[0] );
+    print $result->content(), "\n";
     return not $result->status();
 }
 
@@ -53,7 +53,7 @@ App::Pinto::Remote::Command::remove - remote a package from a remote Pinto repos
 
 =head1 VERSION
 
-version 0.001
+version 0.017
 
 =head1 AUTHOR
 

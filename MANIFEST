@@ -14,7 +14,6 @@ lib/App/Pinto/Remote/Command/add.pm
 lib/App/Pinto/Remote/Command/list.pm
 lib/App/Pinto/Remote/Command/remove.pm
 lib/Pinto/Remote.pm
-lib/Pinto/Remote/Config.pm
 lib/Pinto/Remote/Response.pm
 perlcritic.ini
 t/00-compile.t

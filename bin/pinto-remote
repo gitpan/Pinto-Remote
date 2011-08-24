@@ -1,14 +1,14 @@
 #!/usr/bin/perl
 
-# ABSTRACT: administer a Pinto repository
-# PODNAME: pinto-admin
+# ABSTRACT: Interact with a remote a Pinto repository
+# PODNAME: pinto-remote
 
 use strict;
 use warnings;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.017'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -25,15 +25,15 @@ exit App::Pinto::Remote->run();
 
 =head1 NAME
 
-pinto-admin - administer a Pinto repository
+pinto-remote - Interact with a remote a Pinto repository
 
 =head1 VERSION
 
-version 0.001
+version 0.017
 
 =head1 SYNOPSIS
 
-  pinto-remote [global options] COMMAND [command options] [ARGS]
+  pinto-remote --host=http://pinto.my.com:3000  COMMAND [command options] [ARGS]
 
   pinto-remote help COMMAND
 
@@ -41,147 +41,45 @@ version 0.001
 
 =head1 DESCRIPTION
 
-L<pinto-remote> is a command line utility for managing a remote Pinto
+L<pinto-remote> is a command line utility for using a remote Pinto
 repository.  See L<pinto-admin> for information on creating a Pinto
 repository, and L<pinto-server> for information on providing remote
 access to the repository.
 
-Once a Pinto repository has been established and the server is
-running, you can use C<pinto-remote> to add distributions, remove
+Once a Pinto repository has been established and the L<pinto-server>
+is running, you can use C<pinto-remote> to add distributions, remove
 packages, or inspect the contents of the repository.
-
-=head1 CONFIGURATION
-
-The following parameters can be set in your configuration file.  The
-default location of this file is F<~/.pinto/config.ini>.  You may
-specify an alternative location for this file by setting the
-C<PERL_PINTO> environment variable to point to another path.
-
-The configuration file is in the typical INI format.  Parameters are
-C<NAME = VALUE> pairs.  Global parameters (which are all the ones
-described below) are at the top of the file. Blank lines are ignored,
-leading and trailing whitespace is discarded.  Comments start with a
-semi-colon (;).
-
-Almost all configuration parameters can also be specified on the
-command line, either as global options or command options, so strictly
-speaking, a configuration file is not mandatory.
-
-L<pinto-remote> shares the same configuration file as L<pinto-admin>
-and L<pinto-server>.  So if you've configured those, then the only
-thing you may want to add is the C<[Pinto::Remote]> section.
-
-=over 4
-
-=item author = NAME
-
-Your identity as a module author.  This could be your PAUSE ID, but it
-doesn't have to be.  As long as it is just alphanumeric characters.
-This defaults to your shell username (either C<$ENV{USERNAME}> or
-C<$ENV{USER}> or C<$ENV{LOGNAME}>).  This parameter is only relevant
-to the C<add> and C<remove> commands.
-
-If you have a team of developers and you want them all to be able
-to add/remove the same packages to the repository, then everyone
-on the team should use the same C<author> parameter.
-
-=item host = URL
-
-The path to a directory where your repository will be kept.  This
-parameter is required for all commands.  You must be able to read and
-write to this directory.  You may use a tilde (~) as shorthand for
-your home directory.
-
-=item quiet = 0|1
-
-If true, then only fatal error messages will be displayed.  This
-parameter silently overrides any C<verbose> setting.
-
-=item verbose = 0|1|2
-
-Controls how much noise is made.  Default is 0.
-
-=back
 
 =head1 COMMANDS
 
 The following commands are available.  Say C<pinto-remote help COMMAND>
-to display a list of options available for that C<COMMAND>.
+to display a list of sub-options available for that C<COMMAND>.
 
 =over 4
 
-=item add Some-Distribution-1.2.tar.gz
+=item add path/to/Some-Distribution-1.2.tar.gz
 
-Adds the given distribution to the Pinto repository.  Any packages
-contained in that distribution will mask the foreign packages with the
-same name.  See the L<"BEHAVIOR"> section for more information about
-how locally added distributions interact with foreign ones.
+Adds the distribution to the remote Pinto repository.
 
 =item list
 
-Lists all the curent packages and distributions that are indexed in
-your remote repository.  This is basically just the contents of the
-F<02packages.details.txt.gz> file.
+Lists the packages and distributions that are currently indexed in
+the remote repository.
 
 =item remove Some::Package
 
-Removes the distribution that contains the given package.  All other
-packages that were contained in the same distribution are also
-removed.  You can only remove a package that B<YOU> have added.  You
-cannot remove foreign packages that were pulled in from a remote source
-(however you can mask them by adding your own versions).
+Removes the distribution that contains the package from the remote
+Pinto repository.
 
 =back
 
-=head1 BEHAVIOR
+=head1 SEE ALSO
 
-There are certain rules that govern how a Pinto repository behaves.
-These rules are intended to ensure that clients installing packages
-from your repository will always get the B<right ones>.  Also, the
-rules attempt to make Pinto behave somewhat like PAUSE does.
+L<Pinto::Manual> for broad information about using the Pinto tools.
 
-=over 4
+L<pinto‐admin> to create and manage a Pinto repository.
 
-=item A local package always masks a foreign package, and all other
-packages that are in the same distribution with the foreign package.
-
-This is important, so pay attention.  If you C<add> a distribution
-that contains both C<Foo> and C<Bar> packages, and you later C<add>
-another distribution that contains just the C<Foo> package, then both
-the foreign C<Foo> and C<Bar> packages will be removed from your
-index.  This ensures that anyone installing packages from your
-repository will always get B<your> version of C<Foo>.  But they'll
-never be able to get C<Bar>, because doing so would overwrite your
-C<Foo>.
-
-=item You can never add a distribution with the same name twice.
-
-Most distribution-building tools will put some kind of version number
-in the name of the distribution, so this is rarely a problem.  The
-"name" of a distribution is actually a function of the name of the
-file and the name of the author.  So technically, it is possible for
-two different authors to both add a distribution called
-F<Foo-Bar-1.2.tar.gz>.  But in practice, this rarely happens
-because...
-
-=item Only the original author of a local package can add an
-distribution that contains the same package.
-
-Ownership is given on a first-come basis, just like PAUSE.  So if
-C<SALLY> is the first author to add a distribution to the repository
-with package C<Foo::Bar>, then only C<SALLY> can ever add another
-distribution with that package again.  Unless that package is
-explicitly removed, but...
-
-=item Only the original author of a local package can remove it.
-
-Just like when adding new versions of a local package, only the
-original author can remove it.  Yes, you can just change the C<author>
-parameter in your configuration, but C<SALLY> probably wouldn't
-appreciate you messing with her releases (unless C<SALLY> no longer
-works here).
-
-=back
+L<pinto‐server> to allow remote access to your Pinto repository.
 
 =head1 AUTHOR
 
@@ -198,5 +96,4 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
-
 

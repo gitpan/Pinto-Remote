@@ -1,3 +1,12 @@
+0.017     2011-08-24 00:19:31 America/Los_Angeles
+
+    pinto-remote[1] is now zero-conf.  However, you must
+    always specify the --host on the command line.
+
+    Added support the different types of "list" actions.
+
+    Only compatible with pinto-server 0.017 or higher.
+
 0.001     2011-08-17 17:15:41 America/Los_Angeles
 
     Initial release.

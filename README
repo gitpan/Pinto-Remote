@@ -2,18 +2,18 @@ NAME
     Pinto::Remote - Interact with a remote Pinto repository
 
 VERSION
-    version 0.001
+    version 0.017
 
 METHODS
   add( dist => 'SomeDist-1.2.tar.gz' )
     Adds the specified distribution to the remote Pinto repository. Returns
-    a Pinto::Remote::Response that contains the status and diagnostic
-    messages from the server.
+    a Pinto::Remote::Response that contains the overall status and output
+    from the server.
 
   remove( package => 'Some::Package' )
     Removes the specified package from the remote Pinto repository. Returns
-    a Pinto::Remote::Response that contains the status and diagnostic
-    messages from the server.
+    a Pinto::Remote::Response that contains the overall status and output
+    from the server.
 
   list()
     Returns a Pinto::Remote::Response that contains a list of all the
