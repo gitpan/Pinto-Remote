@@ -17,7 +17,7 @@ use namespace::autoclean;
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.017'; # VERSION
+our $VERSION = '0.018'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -136,7 +136,7 @@ Pinto::Remote - Interact with a remote Pinto repository
 
 =head1 VERSION
 
-version 0.017
+version 0.018
 
 =head1 METHODS
 

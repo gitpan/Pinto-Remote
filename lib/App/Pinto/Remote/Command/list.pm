@@ -12,7 +12,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.017'; # VERSION
+our $VERSION = '0.018'; # VERSION
 
 #-------------------------------------------------------------------------------
 # TODO: refactor constants to the Common dist.
@@ -48,7 +48,7 @@ sub validate_args {
 sub execute {
     my ( $self, $opts, $args ) = @_;
     my $result = $self->pinto_remote()->list( %{$opts} );
-    print $result->content(), "\n";
+    print $result->content();
     return not $result->status();
 }
 
@@ -67,7 +67,7 @@ App::Pinto::Remote::Command::list - list the contents of a remote Pinto reposito
 
 =head1 VERSION
 
-version 0.017
+version 0.018
 
 =head1 AUTHOR
 

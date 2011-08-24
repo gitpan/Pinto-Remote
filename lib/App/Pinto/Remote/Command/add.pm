@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.017'; # VERSION
+our $VERSION = '0.018'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ sub validate_args {
 sub execute {
     my ( $self, $opts, $args ) = @_;
     my $result = $self->pinto_remote->add( %{$opts}, dist => $args->[0] );
-    print $result->content(), "\n";
+    print $result->content();
     return not $result->status();
 }
 
@@ -52,7 +52,7 @@ App::Pinto::Remote::Command::add - add a local distribution to a remote Pinto re
 
 =head1 VERSION
 
-version 0.017
+version 0.018
 
 =head1 AUTHOR
 

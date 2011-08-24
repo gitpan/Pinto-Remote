@@ -1,6 +1,6 @@
 package App::Pinto::Remote::Command::remove;
 
-# ABSTRACT: remote a package from a remote Pinto repository
+# ABSTRACT: remove a package from a remote Pinto repository
 
 use strict;
 use warnings;
@@ -10,7 +10,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.017'; # VERSION
+our $VERSION = '0.018'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ sub validate_args {
 sub execute {
     my ( $self, $opts, $args ) = @_;
     my $result = $self->pinto_remote->remove( %{$opts}, package => $args->[0] );
-    print $result->content(), "\n";
+    print $result->content();
     return not $result->status();
 }
 
@@ -49,11 +49,11 @@ sub execute {
 
 =head1 NAME
 
-App::Pinto::Remote::Command::remove - remote a package from a remote Pinto repository
+App::Pinto::Remote::Command::remove - remove a package from a remote Pinto repository
 
 =head1 VERSION
 
-version 0.017
+version 0.018
 
 =head1 AUTHOR
 

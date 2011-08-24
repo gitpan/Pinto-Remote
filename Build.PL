@@ -20,7 +20,7 @@ my %module_build_args = (
     'Jeffrey Ryan Thalhammer <jeff@imaginative-software.com>'
   ],
   'dist_name' => 'Pinto-Remote',
-  'dist_version' => '0.017',
+  'dist_version' => '0.018',
   'license' => 'perl',
   'module_name' => 'Pinto::Remote',
   'recommends' => {},

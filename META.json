@@ -58,31 +58,31 @@
    "provides" : {
       "App::Pinto::Remote" : {
          "file" : "lib/App/Pinto/Remote.pm",
-         "version" : "0.017"
+         "version" : "0.018"
       },
       "App::Pinto::Remote::Command" : {
          "file" : "lib/App/Pinto/Remote/Command.pm",
-         "version" : "0.017"
+         "version" : "0.018"
       },
       "App::Pinto::Remote::Command::add" : {
          "file" : "lib/App/Pinto/Remote/Command/add.pm",
-         "version" : "0.017"
+         "version" : "0.018"
       },
       "App::Pinto::Remote::Command::list" : {
          "file" : "lib/App/Pinto/Remote/Command/list.pm",
-         "version" : "0.017"
+         "version" : "0.018"
       },
       "App::Pinto::Remote::Command::remove" : {
          "file" : "lib/App/Pinto/Remote/Command/remove.pm",
-         "version" : "0.017"
+         "version" : "0.018"
       },
       "Pinto::Remote" : {
          "file" : "lib/Pinto/Remote.pm",
-         "version" : "0.017"
+         "version" : "0.018"
       },
       "Pinto::Remote::Response" : {
          "file" : "lib/Pinto/Remote/Response.pm",
-         "version" : "0.017"
+         "version" : "0.018"
       }
    },
    "release_status" : "stable",
@@ -94,6 +94,6 @@
          "web" : "https://github.com/thaljef/Pinto-Remote"
       }
    },
-   "version" : "0.017"
+   "version" : "0.018"
 }
 
