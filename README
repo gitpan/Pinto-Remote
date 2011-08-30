@@ -2,7 +2,7 @@ NAME
     Pinto::Remote - Interact with a remote Pinto repository
 
 VERSION
-    version 0.018
+    version 0.019
 
 METHODS
   add( dist => 'SomeDist-1.2.tar.gz' )

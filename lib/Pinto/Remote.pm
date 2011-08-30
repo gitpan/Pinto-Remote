@@ -17,11 +17,11 @@ use namespace::autoclean;
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.018'; # VERSION
+our $VERSION = '0.019'; # VERSION
 
 #-------------------------------------------------------------------------------
 
-has host => (
+has server => (
     is       => 'ro',
     isa      => URI,
     coerce   => 1,
@@ -107,7 +107,7 @@ sub _post {
   my ($self, $action_name, %args) = @_;
 
   my $ua       = LWP::UserAgent->new();
-  my $url      = $self->host() . "/action/$action_name";
+  my $url      = $self->server() . "/action/$action_name";
   my $response = $ua->post($url, %args);
 
   return Pinto::Remote::Response->new( status  => $response->is_success(),
@@ -136,7 +136,7 @@ Pinto::Remote - Interact with a remote Pinto repository
 
 =head1 VERSION
 
-version 0.018
+version 0.019
 
 =head1 METHODS
 

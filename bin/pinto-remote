@@ -8,7 +8,7 @@ use warnings;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.018'; # VERSION
+our $VERSION = '0.019'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -29,11 +29,11 @@ pinto-remote - Interact with a remote a Pinto repository
 
 =head1 VERSION
 
-version 0.018
+version 0.019
 
 =head1 SYNOPSIS
 
-  pinto-remote --host=http://pinto.my.com:3000  COMMAND [command options] [ARGS]
+  pinto-remote --server=http://pinto.my.com:3000 COMMAND [OPTIONS] [ARGS]
 
   pinto-remote help COMMAND
 

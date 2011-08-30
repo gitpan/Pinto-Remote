@@ -1,3 +1,17 @@
+0.019     2011-08-30 01:16:12 America/Los_Angeles
+
+    * Interface changes:
+
+    The --host option is now called --server or just -s.
+
+    If you forget to put http:// in front of your server
+    name, pinto-remote will kindly do it for you.
+
+    * Other Changes:
+
+    Now requires Pinto-Common 0.019, which has the
+    Pinto::Constants library.
+
 0.018     2011-08-24 04:05:49 America/Los_Angeles
 
     No interface changes.
