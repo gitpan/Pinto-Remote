@@ -5,41 +5,45 @@ package App::Pinto::Remote;
 use strict;
 use warnings;
 
+use Class::Load qw();
 use App::Cmd::Setup -app;
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.019'; # VERSION
+our $VERSION = '0.020'; # VERSION
 
 #-------------------------------------------------------------------------------
 
 sub global_opt_spec {
 
   return (
-      [ "server|s=s"   => "URL of your Pinto server (including port)" ],
+      [ "repos|r=s"   => "URL of your Pinto repository server" ],
   );
 }
 
 #-------------------------------------------------------------------------------
 
 
-sub pinto_remote {
+sub pinto {
     my ($self) = @_;
 
-    return $self->{pinto_remote} ||= do {
+    return $self->{pinto} ||= do {
         my %global_options = %{ $self->global_options() };
 
-        $global_options{server}
-            or $self->usage_error('Must specify a server');
+        $global_options{repos}
+            or $self->usage_error('Must specify a repository server');
 
-        $global_options{server} = 'http://' . $global_options{server}
-            if $global_options{server} !~ m{^ http:// }mx;
-
-        require Pinto::Remote;
-        my $pinto_remote = Pinto::Remote->new(%global_options);
+        my $pinto_class = $self->pinto_class();
+        Class::Load::load_class($pinto_class);
+        my $pinto = $pinto_class->new(%global_options);
     };
 }
 
+#-------------------------------------------------------------------------------
+
+sub pinto_class {  return 'Pinto::Remote' }
+
+#-------------------------------------------------------------------------------
 
 1;
 
@@ -55,11 +59,11 @@ App::Pinto::Remote - Command line driver for Pinto::Remote
 
 =head1 VERSION
 
-version 0.019
+version 0.020
 
 =head1 METHODS
 
-=head2 pinto_remote()
+=head2 pinto()
 
 Returns a reference to a L<Pinto::Remote> object that has been
 constructed for this application.

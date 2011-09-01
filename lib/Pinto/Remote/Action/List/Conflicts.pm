@@ -1,34 +1,24 @@
-package Pinto::Remote::Response;
+package Pinto::Remote::Action::List::Conflicts;
 
-# ABSTRACT: Represents the response received from a Pinto::Server
+# ABSTRACT: List the conflicted contents of a remote Pinto repository
 
 use Moose;
-
-use MooseX::Types::Moose qw(Bool Str);
 
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.019'; # VERSION
-
-#------------------------------------------------------------------------------
-# Moose attributes
-
-has status => (
-    is       => 'ro',
-    isa      => Bool,
-    required => 1,
-);
-
-has content => (
-    is      => 'ro',
-    isa     => Str,
-);
+our $VERSION = '0.020'; # VERSION
 
 #------------------------------------------------------------------------------
 
-__PACKAGE__->meta->make_immutable();
+extends qw(Pinto::Remote::Action::List);
+
+#------------------------------------------------------------------------------
+
+has '+type' => (
+    default => 'Conflicts',
+);
 
 #------------------------------------------------------------------------------
 1;
@@ -41,11 +31,11 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Response - Represents the response received from a Pinto::Server
+Pinto::Remote::Action::List::Conflicts - List the conflicted contents of a remote Pinto repository
 
 =head1 VERSION
 
-version 0.019
+version 0.020
 
 =head1 AUTHOR
 
@@ -62,3 +52,4 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
+

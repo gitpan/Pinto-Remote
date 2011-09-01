@@ -5,116 +5,86 @@ package Pinto::Remote;
 use Moose;
 
 use Carp;
-use LWP::UserAgent;
-use English qw(-no_match_vars);
+use Class::Load;
 
-use MooseX::Types::Moose qw(Str);
-use Pinto::Types 0.017 qw(URI AuthorID);
-
-use Pinto::Remote::Response;
+use Pinto::Remote::Config;
+use Pinto::Remote::ActionBatch;
 
 use namespace::autoclean;
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.019'; # VERSION
+our $VERSION = '0.020'; # VERSION
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Moose attributes
 
-has server => (
-    is       => 'ro',
-    isa      => URI,
-    coerce   => 1,
-    required => 1,
+has config    => (
+    is        => 'ro',
+    isa       => 'Pinto::Remote::Config',
+    required  => 1,
 );
 
-has author => (
+
+has _action_batch => (
     is         => 'ro',
-    isa        => AuthorID,
-    coerce     => 1,
-    lazy_build => 1,
+    isa        => 'Pinto::Remote::ActionBatch',
+    writer     => '_set_action_batch',
+    init_arg   => undef,
 );
 
 #------------------------------------------------------------------------------
 
-sub _build_author {                                  ## no critic (FinalReturn)
+sub BUILDARGS {
+    my ($class, %args) = @_;
 
-    # Look at typical environment variables
-    for my $var ( qw(USERNAME USER LOGNAME) ) {
-        return uc $ENV{$var} if $ENV{$var};
-    }
+    $args{config} ||= Pinto::Remote::Config->new( %args );
 
-    # Try using pwent.  Probably only works on *nix
-    if (my $name = getpwuid($REAL_USER_ID)) {
-        return uc $name;
-    }
-
-    # Otherwise, we are hosed!
-    croak 'Unable to determine your user name';
-
+    return \%args;
 }
 
 #------------------------------------------------------------------------------
 
+sub new_action_batch {
+    my ($self, %args) = @_;
 
-sub add {
-  my ($self, %args) = @_;
-  my $dist   = $args{dist};
-  my $author = $args{author} || $self->author();
+    my $batch = Pinto::Remote::ActionBatch->new( config => $self->config(),
+                                                 %args );
+    $self->_set_action_batch( $batch );
 
-  my %ua_args = (
-           Content_Type => 'form-data',
-           Content      => [ author => $author, dist => [$dist], ],
-  );
-
-  return $self->_post('add', %ua_args);
-
+    return $self;
 }
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
+sub add_action {
+    my ($self, $action_name, %args) = @_;
 
-sub remove {
-  my ($self, %args) = @_;
-  my $pkg    = $args{package};
-  my $author = $args{author} || $self->author();
+    my $action_class = "Pinto::Remote::Action::$action_name";
 
-  my %ua_args = (
-           Content => [ author => $author, package => $pkg, ],
-  );
+    eval { Class::Load::load_class($action_class); 1 }
+        or croak "Unable to load action class $action_class: $@";
 
-  return $self->_post('remove', %ua_args);
+    my $action = $action_class->new( config => $self->config(),
+                                     %args );
+
+    $self->_action_batch->enqueue($action);
+
+    return $self;
 }
 
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
+sub run_actions {
+    my ($self) = @_;
 
+    my $action_batch = $self->_action_batch()
+        or croak 'You must create an action batch first';
 
-sub list {
-  my ($self, %args) = @_;
-  my $type = $args{type} || 'All';
-
-  my %ua_args = (
-           Content => [ type => $type, ],
-  );
-
-  return $self->_post('list', %ua_args);
+    return $self->_action_batch->run();
 }
 
-#-------------------------------------------------------------------------------
-
-sub _post {
-  my ($self, $action_name, %args) = @_;
-
-  my $ua       = LWP::UserAgent->new();
-  my $url      = $self->server() . "/action/$action_name";
-  my $response = $ua->post($url, %args);
-
-  return Pinto::Remote::Response->new( status  => $response->is_success(),
-                                       content => $response->content() );
-}
-
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 __PACKAGE__->meta->make_immutable();
 
@@ -136,27 +106,7 @@ Pinto::Remote - Interact with a remote Pinto repository
 
 =head1 VERSION
 
-version 0.019
-
-=head1 METHODS
-
-=head2 add( dist => 'SomeDist-1.2.tar.gz' )
-
-Adds the specified distribution to the remote Pinto repository.
-Returns a L<Pinto::Remote::Response> that contains the overall status
-and output from the server.
-
-=head2 remove( package => 'Some::Package' )
-
-Removes the specified package from the remote Pinto repository.
-Returns a L<Pinto::Remote::Response> that contains the overall status
-and output from the server.
-
-=head2 list()
-
-Returns a L<Pinto::Remote::Response> that contains a list of all the
-packages and distributions that are currently indexed in the remote
-repository.
+version 0.020
 
 =head1 SUPPORT
 

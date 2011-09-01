@@ -8,7 +8,7 @@ use warnings;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.019'; # VERSION
+our $VERSION = '0.020'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -29,15 +29,15 @@ pinto-remote - Interact with a remote a Pinto repository
 
 =head1 VERSION
 
-version 0.019
+version 0.020
 
 =head1 SYNOPSIS
 
-  pinto-remote --server=http://pinto.my.com:3000 COMMAND [OPTIONS] [ARGS]
+  pinto-remote --repos=URL COMMAND [OPTIONS] [ARGS]
 
   pinto-remote help COMMAND
 
-  pinto-remote help
+  pinto-remote manual COMMAND
 
 =head1 DESCRIPTION
 
@@ -50,28 +50,34 @@ Once a Pinto repository has been established and the L<pinto-server>
 is running, you can use C<pinto-remote> to add distributions, remove
 packages, or inspect the contents of the repository.
 
-=head1 COMMANDS
+=head1 GLOBAL OPTIONS
 
-The following commands are available.  Say C<pinto-remote help COMMAND>
-to display a list of sub-options available for that C<COMMAND>.
+The following options are available for all commands.
 
 =over 4
 
-=item add path/to/Some-Distribution-1.2.tar.gz
+=item --repos=URL
 
-Adds the distribution to the remote Pinto repository.
+Specifies the URL of your remote repository (i.e. this is where
+L<pinto-server> is listening.  You may omit the C<http://> part if you
+like.  And if you do not specify a port in your URL, then it defaults
+to default port used by L<pinto-server> (which is currently 3000).
 
-=item list
+=head1 COMMANDS
 
-Lists the packages and distributions that are currently indexed in
-the remote repository.
+L<pinto-remote> supports several commands that perform various
+operations on your remote repository, or report information about your
+remote repository.  To get a listing of all the available commands:
 
-=item remove Some::Package
+  pinto-remote commands
 
-Removes the distribution that contains the package from the remote
-Pinto repository.
+Each command has its own options and arguments.  To get a brief summary:
 
-=back
+  pinto−remote help <command>
+
+To see the complete manual for a command:
+
+  pinto−remote manual <command>
 
 =head1 SEE ALSO
 

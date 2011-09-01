@@ -36,13 +36,17 @@
          "requires" : {
             "App::Cmd::Setup" : 0,
             "Carp" : 0,
-            "English" : 0,
+            "Class::Load" : 0,
             "LWP::UserAgent" : 0,
+            "List::MoreUtils" : 0,
             "Moose" : 0,
             "MooseX::Types::Moose" : 0,
             "Pinto::Constants" : 0,
+            "Pinto::Role::Authored" : 0,
             "Pinto::Types" : "0.017",
+            "Pod::Usage" : 0,
             "namespace::autoclean" : 0,
+            "overload" : 0,
             "perl" : "5.006"
          }
       },
@@ -57,31 +61,79 @@
    "provides" : {
       "App::Pinto::Remote" : {
          "file" : "lib/App/Pinto/Remote.pm",
-         "version" : "0.019"
+         "version" : "0.020"
       },
       "App::Pinto::Remote::Command" : {
          "file" : "lib/App/Pinto/Remote/Command.pm",
-         "version" : "0.019"
+         "version" : "0.020"
       },
       "App::Pinto::Remote::Command::add" : {
          "file" : "lib/App/Pinto/Remote/Command/add.pm",
-         "version" : "0.019"
+         "version" : "0.020"
       },
       "App::Pinto::Remote::Command::list" : {
          "file" : "lib/App/Pinto/Remote/Command/list.pm",
-         "version" : "0.019"
+         "version" : "0.020"
+      },
+      "App::Pinto::Remote::Command::manual" : {
+         "file" : "lib/App/Pinto/Remote/Command/manual.pm",
+         "version" : "0.020"
       },
       "App::Pinto::Remote::Command::remove" : {
          "file" : "lib/App/Pinto/Remote/Command/remove.pm",
-         "version" : "0.019"
+         "version" : "0.020"
+      },
+      "App::Pinto::Remote::Command::version" : {
+         "file" : "lib/App/Pinto/Remote/Command/version.pm",
+         "version" : "0.020"
       },
       "Pinto::Remote" : {
          "file" : "lib/Pinto/Remote.pm",
-         "version" : "0.019"
+         "version" : "0.020"
       },
-      "Pinto::Remote::Response" : {
-         "file" : "lib/Pinto/Remote/Response.pm",
-         "version" : "0.019"
+      "Pinto::Remote::Action" : {
+         "file" : "lib/Pinto/Remote/Action.pm",
+         "version" : "0.020"
+      },
+      "Pinto::Remote::Action::Add" : {
+         "file" : "lib/Pinto/Remote/Action/Add.pm",
+         "version" : "0.020"
+      },
+      "Pinto::Remote::Action::List" : {
+         "file" : "lib/Pinto/Remote/Action/List.pm",
+         "version" : "0.020"
+      },
+      "Pinto::Remote::Action::List::All" : {
+         "file" : "lib/Pinto/Remote/Action/List/All.pm",
+         "version" : "0.020"
+      },
+      "Pinto::Remote::Action::List::Conflicts" : {
+         "file" : "lib/Pinto/Remote/Action/List/Conflicts.pm",
+         "version" : "0.020"
+      },
+      "Pinto::Remote::Action::List::Foreign" : {
+         "file" : "lib/Pinto/Remote/Action/List/Foreign.pm",
+         "version" : "0.020"
+      },
+      "Pinto::Remote::Action::List::Local" : {
+         "file" : "lib/Pinto/Remote/Action/List/Local.pm",
+         "version" : "0.020"
+      },
+      "Pinto::Remote::Action::Remove" : {
+         "file" : "lib/Pinto/Remote/Action/Remove.pm",
+         "version" : "0.020"
+      },
+      "Pinto::Remote::ActionBatch" : {
+         "file" : "lib/Pinto/Remote/ActionBatch.pm",
+         "version" : "0.020"
+      },
+      "Pinto::Remote::BatchResult" : {
+         "file" : "lib/Pinto/Remote/BatchResult.pm",
+         "version" : "0.020"
+      },
+      "Pinto::Remote::Config" : {
+         "file" : "lib/Pinto/Remote/Config.pm",
+         "version" : "0.020"
       }
    },
    "release_status" : "stable",
@@ -93,6 +145,6 @@
          "web" : "https://github.com/thaljef/Pinto-Remote"
       }
    },
-   "version" : "0.019"
+   "version" : "0.020"
 }
 

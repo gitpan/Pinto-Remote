@@ -1,3 +1,10 @@
+0.020     2011-09-01 15:30:23 America/Los_Angeles
+
+    * Bug Fixes:
+
+    The "list" command had become broken because i forgot
+    to import List::MoreUtils.  I'm surprised it compiled at all.
+
 0.019     2011-08-30 01:16:12 America/Los_Angeles
 
     * Interface changes:

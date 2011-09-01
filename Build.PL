@@ -20,7 +20,7 @@ my %module_build_args = (
     'Jeffrey Ryan Thalhammer <jeff@imaginative-software.com>'
   ],
   'dist_name' => 'Pinto-Remote',
-  'dist_version' => '0.019',
+  'dist_version' => '0.020',
   'license' => 'perl',
   'module_name' => 'Pinto::Remote',
   'recommends' => {},
@@ -28,13 +28,17 @@ my %module_build_args = (
   'requires' => {
     'App::Cmd::Setup' => '0',
     'Carp' => '0',
-    'English' => '0',
+    'Class::Load' => '0',
     'LWP::UserAgent' => '0',
+    'List::MoreUtils' => '0',
     'Moose' => '0',
     'MooseX::Types::Moose' => '0',
     'Pinto::Constants' => '0',
+    'Pinto::Role::Authored' => '0',
     'Pinto::Types' => '0.017',
+    'Pod::Usage' => '0',
     'namespace::autoclean' => '0',
+    'overload' => '0',
     'perl' => '5.006'
   },
   'script_files' => [

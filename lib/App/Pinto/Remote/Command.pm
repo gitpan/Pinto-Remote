@@ -11,14 +11,23 @@ use App::Cmd::Setup -command;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.019'; # VERSION
+our $VERSION = '0.020'; # VERSION
 
 #-----------------------------------------------------------------------------
 
+sub usage_desc {
+    my ($self) = @_;
 
-sub pinto_remote {
-  my ($self, $options) = @_;
-  return $self->app()->pinto_remote($options);
+    my ($command) = $self->command_names();
+
+    return "%c --repos=URL $command [OPTIONS] [ARGS]"
+}
+
+#-----------------------------------------------------------------------------
+
+sub pinto {
+    my ($self) = @_;
+    return $self->app->pinto();
 }
 
 #-----------------------------------------------------------------------------
@@ -36,14 +45,7 @@ App::Pinto::Remote::Command - Base class for pinto-remote commands
 
 =head1 VERSION
 
-version 0.019
-
-=head1 METHODS
-
-=head2 pinto_remote( $options )
-
-Returns a reference to a L<Pinto::Remote> object that has been
-constructed for this command.
+version 0.020
 
 =head1 AUTHOR
 
