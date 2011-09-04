@@ -14,7 +14,7 @@ use namespace::autoclean;
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.020'; # VERSION
+our $VERSION = '0.021'; # VERSION
 
 #------------------------------------------------------------------------------
 # Moose attributes
@@ -106,7 +106,7 @@ Pinto::Remote - Interact with a remote Pinto repository
 
 =head1 VERSION
 
-version 0.020
+version 0.021
 
 =head1 SUPPORT
 
@@ -184,7 +184,7 @@ progress on the request by the system.
 
 L<https://github.com/thaljef/Pinto-Remote>
 
-  git clone https://github.com/thaljef/Pinto-Remote
+  git clone git://github.com/thaljef/Pinto-Remote.git
 
 =head1 AUTHOR
 

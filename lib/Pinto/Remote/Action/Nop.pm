@@ -1,9 +1,8 @@
-package Pinto::Remote::Action::Remove;
+package Pinto::Remote::Action::Nop;
 
-# ABSTRACT: Remove a package from a remote repository
+# ABSTRACT: Run a no-op on a remote repository
 
 use Moose;
-use MooseX::Types::Moose qw(Str);
 
 use namespace::autoclean;
 
@@ -17,40 +16,9 @@ extends qw(Pinto::Remote::Action);
 
 #------------------------------------------------------------------------------
 
-with qw(Pinto::Role::Authored);
-
-#------------------------------------------------------------------------------
-
-has dist_name  => (
-    is       => 'ro',
-    isa      => Str,
-    required => 1,
-);
-
-has message => (
-    is      => 'ro',
-    isa     => Str,
-);
-
-has tag => (
-    is      => 'ro',
-    isa     => Str,
-);
-
-#------------------------------------------------------------------------------
-
 override execute => sub {
     my ($self) = @_;
-
-    my %ua_args = (
-        Content => [ author    => $self->author(),
-                     dist_name => $self->dist_name(),
-                     message   => $self->message(),
-                     tag       => $self->tag(),
-                   ],
-    );
-
-    return $self->post('remove', %ua_args);
+    return $self->post('nop');
 };
 
 #------------------------------------------------------------------------------
@@ -68,7 +36,7 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Action::Remove - Remove a package from a remote repository
+Pinto::Remote::Action::Nop - Run a no-op on a remote repository
 
 =head1 VERSION
 

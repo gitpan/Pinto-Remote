@@ -1,11 +1,9 @@
-package App::Pinto::Remote::Command::manual;
+package App::Pinto::Remote::Command::ping;
 
-# ABSTRACT: show the full manual for a command
+# ABSTRACT: check if a remote Pinto repository is alive
 
 use strict;
 use warnings;
-
-use Pod::Usage qw(pod2usage);
 
 use base qw(App::Pinto::Remote::Command);
 
@@ -15,64 +13,64 @@ our $VERSION = '0.021'; # VERSION
 
 #-------------------------------------------------------------------------------
 
-sub command_names { return qw( manual man --man ) }
-
-#-----------------------------------------------------------------------------
-
-sub usage_desc {
-    my ($self) = @_;
-
-    my ($command) = $self->command_names();
-
-    return "%c $command COMMAND"
-}
+sub command_names { return qw( ping nop ) }
 
 #-------------------------------------------------------------------------------
 
 sub validate_args {
     my ($self, $opts, $args) = @_;
 
-    $self->usage_error("Must specify a command") if @{ $args } != 1;
+    $self->usage_error('Arguments are not allowed') if @{ $args };
 
     return 1;
 }
 
 #-------------------------------------------------------------------------------
-# This was stolen from App::Cmd::Command::help
 
 sub execute {
     my ($self, $opts, $args) = @_;
 
-    my ($cmd, undef, undef) = $self->app->prepare_command(@$args);
+    $self->pinto->new_action_batch( %{$opts} );
+    $self->pinto->add_action('Nop', %{$opts});
+    my $result = $self->pinto->run_actions();
+    print $result->to_string();
 
-    my $class = ref $cmd;
-    (my $relative_path = $class) =~ s< :: ></>xmsg;
-    $relative_path .= '.pm';
-
-    my $absolute_path = $INC{$relative_path}
-        or die "No manual available for $class";  ## no critic qw(Carping)
-
-    pod2usage(-verbose => 2, -input => $absolute_path, -exitval => 0);
-
-    return 1;
+    return $result->is_success() ? 0 : 1;
 }
 
 #-------------------------------------------------------------------------------
 1;
 
 
-__END__
+
 =pod
 
 =for :stopwords Jeffrey Ryan Thalhammer Imaginative Software Systems
 
 =head1 NAME
 
-App::Pinto::Remote::Command::manual - show the full manual for a command
+App::Pinto::Remote::Command::ping - check if a remote Pinto repository is alive
 
 =head1 VERSION
 
 version 0.021
+
+=head1 SYNOPSIS
+
+  pinto-remote --repos=URL ping
+
+=head1 DESCRIPTION
+
+This command checks that a remote L<Pinto::Server> is alive and
+currently able to get a lock on the repository.
+
+=head1 COMMAND ARGUMENTS
+
+None.
+
+=head1 COMMAND OPTIONS
+
+None.
 
 =head1 AUTHOR
 
@@ -86,4 +84,7 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
+
+
+__END__
 

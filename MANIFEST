@@ -13,6 +13,7 @@ lib/App/Pinto/Remote/Command.pm
 lib/App/Pinto/Remote/Command/add.pm
 lib/App/Pinto/Remote/Command/list.pm
 lib/App/Pinto/Remote/Command/manual.pm
+lib/App/Pinto/Remote/Command/ping.pm
 lib/App/Pinto/Remote/Command/remove.pm
 lib/App/Pinto/Remote/Command/version.pm
 lib/Pinto/Remote.pm
@@ -23,6 +24,7 @@ lib/Pinto/Remote/Action/List/All.pm
 lib/Pinto/Remote/Action/List/Conflicts.pm
 lib/Pinto/Remote/Action/List/Foreign.pm
 lib/Pinto/Remote/Action/List/Local.pm
+lib/Pinto/Remote/Action/Nop.pm
 lib/Pinto/Remote/Action/Remove.pm
 lib/Pinto/Remote/ActionBatch.pm
 lib/Pinto/Remote/BatchResult.pm
