@@ -4,7 +4,7 @@
       "Jeffrey Ryan Thalhammer <jeff@imaginative-software.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.200012, CPAN::Meta::Converter version 2.110930",
+   "generated_by" : "Dist::Zilla version 4.300003, CPAN::Meta::Converter version 2.112150",
    "license" : [
       "perl_5"
    ],
@@ -34,114 +34,99 @@
       },
       "runtime" : {
          "requires" : {
-            "App::Cmd::Setup" : 0,
-            "Carp" : 0,
-            "Class::Load" : 0,
-            "LWP::UserAgent" : 0,
-            "List::MoreUtils" : 0,
-            "Moose" : 0,
-            "MooseX::Types::Moose" : 0,
-            "Pinto::Constants" : 0,
-            "Pinto::Role::Authored" : 0,
-            "Pinto::Types" : "0.017",
-            "Pod::Usage" : 0,
-            "namespace::autoclean" : 0,
-            "overload" : 0,
-            "perl" : "5.006"
+            "App::Cmd::Setup" : "0",
+            "Carp" : "0",
+            "Class::Load" : "0",
+            "LWP::UserAgent" : "0",
+            "Moose" : "0",
+            "MooseX::Types::Moose" : "0",
+            "Pinto::Interface::Authorable" : "0",
+            "Pinto::Types" : "0",
+            "Pod::Usage" : "0",
+            "base" : "0",
+            "namespace::autoclean" : "0",
+            "overload" : "0",
+            "perl" : "5.006",
+            "strict" : "0",
+            "warnings" : "0"
          }
       },
       "test" : {
          "requires" : {
-            "File::Find" : 0,
-            "File::Temp" : 0,
-            "Test::More" : 0
+            "File::Find" : "0",
+            "File::Temp" : "0",
+            "Test::More" : "0"
          }
       }
    },
    "provides" : {
       "App::Pinto::Remote" : {
          "file" : "lib/App/Pinto/Remote.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "App::Pinto::Remote::Command" : {
          "file" : "lib/App/Pinto/Remote/Command.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "App::Pinto::Remote::Command::add" : {
          "file" : "lib/App/Pinto/Remote/Command/add.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "App::Pinto::Remote::Command::list" : {
          "file" : "lib/App/Pinto/Remote/Command/list.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "App::Pinto::Remote::Command::manual" : {
          "file" : "lib/App/Pinto/Remote/Command/manual.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "App::Pinto::Remote::Command::ping" : {
          "file" : "lib/App/Pinto/Remote/Command/ping.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "App::Pinto::Remote::Command::remove" : {
          "file" : "lib/App/Pinto/Remote/Command/remove.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "App::Pinto::Remote::Command::version" : {
          "file" : "lib/App/Pinto/Remote/Command/version.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "Pinto::Remote" : {
          "file" : "lib/Pinto/Remote.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "Pinto::Remote::Action" : {
          "file" : "lib/Pinto/Remote/Action.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "Pinto::Remote::Action::Add" : {
          "file" : "lib/Pinto/Remote/Action/Add.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "Pinto::Remote::Action::List" : {
          "file" : "lib/Pinto/Remote/Action/List.pm",
-         "version" : "0.021"
-      },
-      "Pinto::Remote::Action::List::All" : {
-         "file" : "lib/Pinto/Remote/Action/List/All.pm",
-         "version" : "0.021"
-      },
-      "Pinto::Remote::Action::List::Conflicts" : {
-         "file" : "lib/Pinto/Remote/Action/List/Conflicts.pm",
-         "version" : "0.021"
-      },
-      "Pinto::Remote::Action::List::Foreign" : {
-         "file" : "lib/Pinto/Remote/Action/List/Foreign.pm",
-         "version" : "0.021"
-      },
-      "Pinto::Remote::Action::List::Local" : {
-         "file" : "lib/Pinto/Remote/Action/List/Local.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "Pinto::Remote::Action::Nop" : {
          "file" : "lib/Pinto/Remote/Action/Nop.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
       "Pinto::Remote::Action::Remove" : {
          "file" : "lib/Pinto/Remote/Action/Remove.pm",
-         "version" : "0.021"
+         "version" : "0.026"
       },
-      "Pinto::Remote::ActionBatch" : {
-         "file" : "lib/Pinto/Remote/ActionBatch.pm",
-         "version" : "0.021"
-      },
-      "Pinto::Remote::BatchResult" : {
-         "file" : "lib/Pinto/Remote/BatchResult.pm",
-         "version" : "0.021"
+      "Pinto::Remote::Batch" : {
+         "file" : "lib/Pinto/Remote/Batch.pm",
+         "version" : "0.026"
       },
       "Pinto::Remote::Config" : {
          "file" : "lib/Pinto/Remote/Config.pm",
-         "version" : "0.021"
+         "version" : "0.026"
+      },
+      "Pinto::Remote::Result" : {
+         "file" : "lib/Pinto/Remote/Result.pm",
+         "version" : "0.026"
       }
    },
    "release_status" : "stable",
@@ -155,6 +140,6 @@
          "web" : "https://github.com/thaljef/Pinto-Remote"
       }
    },
-   "version" : "0.021"
+   "version" : "0.026"
 }
 

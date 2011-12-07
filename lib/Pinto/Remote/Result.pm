@@ -1,6 +1,6 @@
-package Pinto::Remote::BatchResult;
+package Pinto::Remote::Result;
 
-# ABSTRACT: Accumulates exceptions and status from a batch of actions
+# ABSTRACT: The result from running a Batch of Actions
 
 use Moose;
 
@@ -10,7 +10,7 @@ use overload ('""' => 'to_string');
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.021'; # VERSION
+our $VERSION = '0.026'; # VERSION
 
 #------------------------------------------------------------------------------
 # Moose attributes
@@ -60,11 +60,11 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::BatchResult - Accumulates exceptions and status from a batch of actions
+Pinto::Remote::Result - The result from running a Batch of Actions
 
 =head1 VERSION
 
-version 0.021
+version 0.026
 
 =head1 AUTHOR
 

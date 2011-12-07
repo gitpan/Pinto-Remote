@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.021'; # VERSION
+our $VERSION = '0.026'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ sub validate_args {
 sub execute {
     my ($self, $opts, $args) = @_;
 
-    $self->pinto->new_action_batch( %{$opts} );
+    $self->pinto->new_batch( %{$opts} );
     $self->pinto->add_action('Nop', %{$opts});
     my $result = $self->pinto->run_actions();
     print $result->to_string();
@@ -53,7 +53,7 @@ App::Pinto::Remote::Command::ping - check if a remote Pinto repository is alive
 
 =head1 VERSION
 
-version 0.021
+version 0.026
 
 =head1 SYNOPSIS
 

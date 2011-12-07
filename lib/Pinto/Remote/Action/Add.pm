@@ -11,7 +11,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.021'; # VERSION
+our $VERSION = '0.026'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -19,21 +19,23 @@ extends qw(Pinto::Remote::Action);
 
 #------------------------------------------------------------------------------
 
-with qw(Pinto::Role::Authored);
+with qw(Pinto::Interface::Authorable);
 
 #------------------------------------------------------------------------------
 
-has dist_file => (
+has archive  => (
     is       => 'ro',
     isa      => File,
     coerce   => 1,
     required => 1,
 );
 
+
 has message => (
     is      => 'ro',
     isa     => Str,
 );
+
 
 has tag => (
     is      => 'ro',
@@ -46,12 +48,16 @@ override execute => sub {
     my ($self) = @_;
 
     my %ua_args = (
+
         Content_Type => 'form-data',
-        Content      => [ author    => $self->author(),
-                          dist_file => [ $self->dist_file()->stringify() ],
-                          message   => $self->message(),
-                          tag       => $self->tag(),
-                        ],
+
+        Content => [
+
+            author    => $self->author(),
+            archive   => [ $self->archive->stringify() ],
+            message   => $self->message(),
+            tag       => $self->tag(),
+        ],
     );
 
     return $self->post('add', %ua_args);
@@ -76,7 +82,7 @@ Pinto::Remote::Action::Add - Add a distribution to a remote repository
 
 =head1 VERSION
 
-version 0.021
+version 0.026
 
 =head1 AUTHOR
 

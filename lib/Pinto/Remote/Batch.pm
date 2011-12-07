@@ -1,14 +1,14 @@
-package Pinto::Remote::ActionBatch;
+package Pinto::Remote::Batch;
 
 # ABSTRACT: Runs a series of remote actions
 
 use Moose;
 
-use Pinto::Remote::BatchResult;
+use Pinto::Remote::Result;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.021'; # VERSION
+our $VERSION = '0.026'; # VERSION
 
 #------------------------------------------------------------------------------
 # Moose attributes
@@ -34,7 +34,7 @@ has _actions => (
 sub run {
     my ($self) = @_;
 
-    my $result = Pinto::Remote::BatchResult->new();
+    my $result = Pinto::Remote::Result->new();
 
     while ( my $action = $self->dequeue() ) {
         my $response = $action->execute();
@@ -60,11 +60,11 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::ActionBatch - Runs a series of remote actions
+Pinto::Remote::Batch - Runs a series of remote actions
 
 =head1 VERSION
 
-version 0.021
+version 0.026
 
 =head1 AUTHOR
 

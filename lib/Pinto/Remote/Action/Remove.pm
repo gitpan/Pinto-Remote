@@ -9,7 +9,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.021'; # VERSION
+our $VERSION = '0.026'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -17,20 +17,22 @@ extends qw(Pinto::Remote::Action);
 
 #------------------------------------------------------------------------------
 
-with qw(Pinto::Role::Authored);
+with qw(Pinto::Interface::Authorable);
 
 #------------------------------------------------------------------------------
 
-has dist_name  => (
+has path     => (
     is       => 'ro',
     isa      => Str,
     required => 1,
 );
 
+
 has message => (
     is      => 'ro',
     isa     => Str,
 );
+
 
 has tag => (
     is      => 'ro',
@@ -43,11 +45,16 @@ override execute => sub {
     my ($self) = @_;
 
     my %ua_args = (
-        Content => [ author    => $self->author(),
-                     dist_name => $self->dist_name(),
-                     message   => $self->message(),
-                     tag       => $self->tag(),
-                   ],
+
+        Content_Type => 'form-data',
+
+        Content => [
+
+            author    => $self->author(),
+            path      => $self->path(),
+            message   => $self->message(),
+            tag       => $self->tag(),
+        ],
     );
 
     return $self->post('remove', %ua_args);
@@ -72,7 +79,7 @@ Pinto::Remote::Action::Remove - Remove a package from a remote repository
 
 =head1 VERSION
 
-version 0.021
+version 0.026
 
 =head1 AUTHOR
 

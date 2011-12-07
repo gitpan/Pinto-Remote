@@ -20,15 +20,11 @@ lib/Pinto/Remote.pm
 lib/Pinto/Remote/Action.pm
 lib/Pinto/Remote/Action/Add.pm
 lib/Pinto/Remote/Action/List.pm
-lib/Pinto/Remote/Action/List/All.pm
-lib/Pinto/Remote/Action/List/Conflicts.pm
-lib/Pinto/Remote/Action/List/Foreign.pm
-lib/Pinto/Remote/Action/List/Local.pm
 lib/Pinto/Remote/Action/Nop.pm
 lib/Pinto/Remote/Action/Remove.pm
-lib/Pinto/Remote/ActionBatch.pm
-lib/Pinto/Remote/BatchResult.pm
+lib/Pinto/Remote/Batch.pm
 lib/Pinto/Remote/Config.pm
+lib/Pinto/Remote/Result.pm
 perlcritic.ini
 t/00-compile.t
 weaver.ini

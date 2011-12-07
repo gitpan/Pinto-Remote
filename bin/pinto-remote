@@ -8,7 +8,7 @@ use warnings;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.021'; # VERSION
+our $VERSION = '0.026'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ pinto-remote - Interact with a remote a Pinto repository
 
 =head1 VERSION
 
-version 0.021
+version 0.026
 
 =head1 SYNOPSIS
 
@@ -46,7 +46,7 @@ repository.  See L<pinto-admin> for information on creating a Pinto
 repository, and L<pinto-server> for information on providing remote
 access to the repository.
 
-Once a Pinto repository has been established and the L<pinto-server>
+Once a Pinto repository has been established and the C<pinto-server>
 is running, you can use C<pinto-remote> to add distributions, remove
 packages, or inspect the contents of the repository.
 
@@ -65,27 +65,27 @@ to default port used by L<pinto-server> (which is currently 3000).
 
 =head1 COMMANDS
 
-L<pinto-remote> supports several commands that perform various
+C<pinto-remote> supports several commands that perform various
 operations on your remote repository, or report information about your
 remote repository.  To get a listing of all the available commands:
 
-  pinto-remote commands
+  $> pinto-remote commands
 
 Each command has its own options and arguments.  To get a brief summary:
 
-  pinto−remote help <command>
+  $> pinto-remote help <command>
 
 To see the complete manual for a command:
 
-  pinto−remote manual <command>
+  $> pinto-remote manual <command>
 
 =head1 SEE ALSO
 
+L<pinto-admin> to create and manage a Pinto repository.
+
+L<pinto-server> to allow remote access to your Pinto repository.
+
 L<Pinto::Manual> for broad information about using the Pinto tools.
-
-L<pinto‐admin> to create and manage a Pinto repository.
-
-L<pinto‐server> to allow remote access to your Pinto repository.
 
 =head1 AUTHOR
 

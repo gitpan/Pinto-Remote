@@ -1,3 +1,9 @@
+0.026     2011-12-07 15:24:54 America/Los_Angeles
+
+    No new functionality.  Just updating the code to match the latest
+    Pinto API.  Pinto and Pinto::Remote are both evolving rapidly.  I
+    make no promises about compatibility.
+
 0.021     2011-09-03 23:41:55 America/Los_Angeles
 
     Added the 'ping' command, which does a Nop on the remote

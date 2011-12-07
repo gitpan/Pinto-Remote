@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.021'; # VERSION
+our $VERSION = '0.026'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ sub opt_spec {
     my ($self, $app) = @_;
 
     return (
-        [ 'author|a=s'  => 'Your (alphanumeric) author ID' ],
+        [ 'author=s'    => 'Your (alphanumeric) author ID' ],
         [ 'message|m=s' => 'Prepend a message to the VCS log' ],
         [ 'tag=s'       => 'Specify a VCS tag name' ],
     );
@@ -34,7 +34,7 @@ sub usage_desc {
 
     my ($command) = $self->command_names();
 
-    return "%c --repos=URL $command [OPTIONS] DISTRIBUTION_NAME";
+    return "%c --repos=URL $command [OPTIONS] DISTRIBUTION_PATH";
 }
 
 #-------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ sub usage_desc {
 sub validate_args {
     my ($self, $opts, $args) = @_;
 
-    $self->usage_error("Must specify exactly one distribution name") if @{ $args } != 1;
+    $self->usage_error("Must specify exactly one distribution path") if @{ $args } != 1;
 
     return 1;
 }
@@ -52,8 +52,8 @@ sub validate_args {
 sub execute {
     my ( $self, $opts, $args ) = @_;
 
-    $self->pinto->new_action_batch( %{$opts} );
-    $self->pinto->add_action('Remove', %{$opts}, dist_name => $args->[0]);
+    $self->pinto->new_batch( %{$opts} );
+    $self->pinto->add_action('Remove', %{$opts}, path => $args->[0]);
     my $result = $self->pinto->run_actions();
     print $result->to_string();
 
@@ -75,32 +75,29 @@ App::Pinto::Remote::Command::remove - remove a distribution from a remote Pinto 
 
 =head1 VERSION
 
-version 0.021
+version 0.026
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL remove [OPTIONS] DISTRIBUTION_NAME
+  pinto-remote --repos=URL remove [OPTIONS] DISTRIBUTION_PATH
 
 =head1 DESCRIPTION
 
-This command removes a local distribution from the repository.  You
-cannot remove foreign distributions that were pulled in from another
-repository using the C<update> command (however you can mask them by
-C<add>ing your own versions).
+This command removes a distribution from the repository.
 
 =head1 COMMAND ARGUMENTS
 
-The argument to this command is the name of the distribution you wish
-to remove.  You must specify the complete distribution name, including
+The argument to this command is the file name of the distribution you
+wish to remove.  You must specify the complete file name, including
 version number and extension.  The precise identity of the
 distribution that will be removed depends on who you are.  So if you
 are C<JOE> and you ask to remove C<Foo-1.0.tar.gz> then you are really
 asking to remove C<J/JO/JOE/Foo-1.0.tar.gz>.
 
 To remove a distribution that was added by another author, use the
-C<--author> option to change who you are.  Or you can just
-explicitly specify the full identity of the distribution.  So the
-following two examples are equivalent:
+C<--author> option to change who you are.  Or you can just explicitly
+specify the full index path of the distribution.  So the following two
+examples are equivalent:
 
   $> pinto-remote --repos=http://my.server:3000 remove --author=SUSAN Foo-1.0.tar.gz
   $> pinto-remote --repos=http://my.server:3000 remove S/SU/SUSAN/Foo-1.0.tar.gz

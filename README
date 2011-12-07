@@ -2,7 +2,7 @@ NAME
     Pinto::Remote - Interact with a remote Pinto repository
 
 VERSION
-    version 0.021
+    version 0.026
 
 SUPPORT
   Perldoc
@@ -20,13 +20,6 @@ SUPPORT
         The default CPAN search engine, useful to view POD in HTML format.
 
         <http://search.cpan.org/dist/Pinto-Remote>
-
-    *   RT: CPAN's Bug Tracker
-
-        The RT ( Request Tracker ) website is the default bug/issue tracking
-        system for CPAN.
-
-        <http://rt.cpan.org/NoAuth/Bugs.html?Dist=Pinto-Remote>
 
     *   CPAN Ratings
 
@@ -57,10 +50,7 @@ SUPPORT
         <http://deps.cpantesters.org/?module=Pinto::Remote>
 
   Bugs / Feature Requests
-    Please report any bugs or feature requests by email to "bug-pinto-remote
-    at rt.cpan.org", or through the web interface at
-    <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Pinto-Remote>. You will
-    be automatically notified of any progress on the request by the system.
+    <https://github.com/thaljef/Pinto-Remote/issues>
 
   Source Code
     <https://github.com/thaljef/Pinto-Remote>

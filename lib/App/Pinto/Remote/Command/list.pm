@@ -5,15 +5,11 @@ package App::Pinto::Remote::Command::list;
 use strict;
 use warnings;
 
-use Pinto::Constants qw(:list);
-
-use List::MoreUtils qw(none);
-
 use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.021'; # VERSION
+our $VERSION = '0.026'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -24,11 +20,8 @@ sub command_names { return qw( list ls ) }
 sub opt_spec {
     my ($self, $app) = @_;
 
-    # TODO: Use the "one_of" feature of Getopt::Long::Descriptive to
-    # define and validate the different types of lists.
-
     return (
-        [ 'type=s'  => "One of: ( $PINTO_LIST_TYPES_STRING )"],
+        [ 'format=s'  => 'Format specification (see documentation)'],
     );
 }
 
@@ -39,8 +32,9 @@ sub validate_args {
 
     $self->usage_error('Arguments are not allowed') if @{ $args };
 
-    $opts->{type} ||= $PINTO_DEFAULT_LIST_TYPE;
-    $self->usage_error('Invalid type') if none { $opts->{type} eq $_ } @PINTO_LIST_TYPES;
+    ## no critic qw(StringyEval)
+    ## Double-interpolate, to expand \n, \t, etc.
+    $opts->{format} = eval qq{"$opts->{format}"} if $opts->{format};
 
     return 1;
 }
@@ -50,9 +44,8 @@ sub validate_args {
 sub execute {
     my ($self, $opts, $args) = @_;
 
-    $self->pinto->new_action_batch( %{$opts} );
-    my $list_class = 'List::' . ucfirst $opts->{type};
-    $self->pinto->add_action($list_class, %{$opts});
+    $self->pinto->new_batch( %{$opts} );
+    $self->pinto->add_action('List', %{$opts});
     my $result = $self->pinto->run_actions();
 
     return $result->is_success() ? 0 : 1;
@@ -73,7 +66,7 @@ App::Pinto::Remote::Command::list - list the contents of a remote Pinto reposito
 
 =head1 VERSION
 
-version 0.021
+version 0.026
 
 =head1 SYNOPSIS
 
@@ -81,9 +74,9 @@ version 0.021
 
 =head1 DESCRIPTION
 
-This command lists the distributions and packages that are indexed in
-your repository.  You can see all of them, only foreign ones, only
-local ones, or only the local ones that conflict with a foreign one.
+This command lists the distributions and packages that are in your
+repository.  You also can customize the format and content of the
+output.
 
 Note this command never changes the state of your repository.
 
@@ -95,38 +88,50 @@ None.
 
 =over 4
 
-=item --type=(all | local | foreign | conflicts)
+=item format
 
-Specifies what type of packages and distributions to list. In all
-cases, only packages and distributions that are indexed will appear.
-If you have outdated distributions in your repository, they will never
-appear be listed.  Valid types are:
+Sets the format of the output using C<printf>-style placeholders.
+Valid placeholders are:
 
-=over 8
+  Placeholder    Meaning
+  -----------------------------------------------------------------------------
+  %n             Package name
+  %N             Package name-version
+  %v             Package version
+  %x             Index status:                   (@) = is latest
+  %y             Pin status:                     (+) = is pinned
+  %m             Distribution maturity:          (d) = developer, (r) = release
+  %p             Distribution index path [1]
+  %P             Distribution physical path [2]
+  %s             Distribution origin:            (l) = local, (f) = foreign
+  %S             Distribution source repository
+  %a             Distribution author
+  %d             Distribution name
+  %D             Distribution name-version
+  %w             Distribution version
+  %u             Distribution url
+  %%             A literal '%'
 
-=item all
 
-Lists all the packages and distributions.  This is the default type.
+  [1]: The index path is always a Unix-style path fragment, as it
+       appears in the 02packages.details.txt index file.
 
-=item local
+  [2]: The physical path is always in the native style for this OS,
+       and is relative to the root directory of the repository.
 
-Lists only the local packages and distributions that were added with
-the C<add> command.
+You can also specify the minimum field widths and left or right
+justification, using the usual notation.  For example, this is what
+the default format looks like.
 
-=item foreign
-
-Lists only the foreign packages and distributions that were pulled in
-with the C<update> command.
-
-=item conflicts
-
-Lists only the local distributions that conflict with a foreign
-distribution.  In other words, the local and foreign distribution
-contain a package with the same name.
+  %x%m%s %-38n %v %p\n
 
 =back
 
-=back
+=head1 TO DO
+
+In the future, we may permit the use of regular expressions or some
+other syntax for narrowing the list to certain distributions and
+packages.  You suggestions are welcome.
 
 =head1 AUTHOR
 

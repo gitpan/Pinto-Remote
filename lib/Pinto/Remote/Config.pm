@@ -4,19 +4,19 @@ package Pinto::Remote::Config;
 
 use Moose;
 
-use Pinto::Types qw(URI);
+use Pinto::Types qw(Uri);
 
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.021'; # VERSION
+our $VERSION = '0.026'; # VERSION
 
 #------------------------------------------------------------------------------
 
 has repos => (
     is       => 'ro',
-    isa      => URI,
+    isa      => Uri,
     coerce   => 1,
     required => 1,
 );
@@ -58,7 +58,7 @@ Pinto::Remote::Config - Internal configuration for Pinto::Remote
 
 =head1 VERSION
 
-version 0.021
+version 0.026
 
 =head1 AUTHOR
 
