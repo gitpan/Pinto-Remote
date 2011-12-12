@@ -13,7 +13,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.026'; # VERSION
+our $VERSION = '0.028'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -32,6 +32,21 @@ has out => (
 has format => (
     is       => 'ro',
     isa      => Str,
+    default  => '',
+);
+
+
+has packages => (
+    is       => 'ro',
+    isa      => Str,
+    default  => '',
+);
+
+
+has distributions => (
+    is       => 'ro',
+    isa      => Str,
+    default  => '',
 );
 
 #------------------------------------------------------------------------------
@@ -40,7 +55,19 @@ override execute => sub {
     my ($self) = @_;
 
     my @format = $self->format() ? ( format => $self->format() ) : ();
-    my %ua_args = ( Content => \@format );
+
+    my %ua_args = (
+
+        Content_Type => 'form-data',
+
+        Content => [
+
+            format        => $self->format(),
+            packages      => $self->packages(),
+            distributions => $self->distributions(),
+       ],
+   );
+
     my $response = $self->post('list', %ua_args);
     print { $self->out() } $response->content();
 
@@ -66,7 +93,7 @@ Pinto::Remote::Action::List - List the contents of a remote repository
 
 =head1 VERSION
 
-version 0.026
+version 0.028
 
 =head1 AUTHOR
 

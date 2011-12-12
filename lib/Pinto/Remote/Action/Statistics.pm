@@ -1,9 +1,13 @@
-package Pinto::Remote::Action::Remove;
+package Pinto::Remote::Action::Statistics;
 
-# ABSTRACT: Remove a package from a remote repository
+# ABSTRACT: Report statistics about a remote repository
 
 use Moose;
 use MooseX::Types::Moose qw(Str);
+
+use Carp;
+
+use Pinto::Types qw(IO);
 
 use namespace::autoclean;
 
@@ -17,26 +21,18 @@ extends qw(Pinto::Remote::Action);
 
 #------------------------------------------------------------------------------
 
-with qw(Pinto::Interface::Authorable);
+has out => (
+    is      => 'ro',
+    isa     => IO,
+    coerce  => 1,
+    default => sub { [fileno(STDOUT), '>'] },
+);
 
-#------------------------------------------------------------------------------
 
-has path     => (
+has format => (
     is       => 'ro',
     isa      => Str,
-    required => 1,
-);
-
-
-has message => (
-    is      => 'ro',
-    isa     => Str,
-);
-
-
-has tag => (
-    is      => 'ro',
-    isa     => Str,
+    default  => '',
 );
 
 #------------------------------------------------------------------------------
@@ -44,20 +40,22 @@ has tag => (
 override execute => sub {
     my ($self) = @_;
 
+    my @format = $self->format() ? ( format => $self->format() ) : ();
+
     my %ua_args = (
 
         Content_Type => 'form-data',
 
         Content => [
 
-            author    => $self->author(),
-            path      => $self->path(),
-            message   => $self->message(),
-            tag       => $self->tag(),
+            format        => $self->format(),
         ],
-    );
+   );
 
-    return $self->post('remove', %ua_args);
+    my $response = $self->post('statistics', %ua_args);
+    print { $self->out() } $response->content();
+
+    return $response;
 };
 
 #------------------------------------------------------------------------------
@@ -75,7 +73,7 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Action::Remove - Remove a package from a remote repository
+Pinto::Remote::Action::Statistics - Report statistics about a remote repository
 
 =head1 VERSION
 
@@ -96,3 +94,4 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
+

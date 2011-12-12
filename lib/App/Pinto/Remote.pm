@@ -10,7 +10,7 @@ use App::Cmd::Setup -app;
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.026'; # VERSION
+our $VERSION = '0.028'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ sub pinto {
     return $self->{pinto} ||= do {
         my %global_options = %{ $self->global_options() };
 
-        $global_options{repos}  ||= $ENV{PINTO_REPOSITORY}
+        $global_options{repos} ||= $ENV{PINTO_REPOSITORY}
             || $self->usage_error('Must specify a repository server');
 
         my $pinto_class = $self->pinto_class();
@@ -59,7 +59,7 @@ App::Pinto::Remote - Command line driver for Pinto::Remote
 
 =head1 VERSION
 
-version 0.026
+version 0.028
 
 =head1 METHODS
 

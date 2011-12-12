@@ -1,6 +1,6 @@
-package App::Pinto::Remote::Command::remove;
+package App::Pinto::Remote::Command::pin;
 
-# ABSTRACT: remove a distribution from the remote repository
+# ABSTRACT: force a package into the index
 
 use strict;
 use warnings;
@@ -13,15 +13,10 @@ our $VERSION = '0.028'; # VERSION
 
 #-------------------------------------------------------------------------------
 
-sub command_names { return qw( remove rm delete del ) }
-
-#-------------------------------------------------------------------------------
-
 sub opt_spec {
     my ($self, $app) = @_;
 
     return (
-        [ 'author=s'    => 'Your (alphanumeric) author ID' ],
         [ 'message|m=s' => 'Prepend a message to the VCS log' ],
         [ 'tag=s'       => 'Specify a VCS tag name' ],
     );
@@ -34,7 +29,7 @@ sub usage_desc {
 
     my ($command) = $self->command_names();
 
-    return "%c --repos=URL $command [OPTIONS] DISTRIBUTION_PATH";
+    return "%c --repos=URL $command [OPTIONS] PACKAGE";
 }
 
 #-------------------------------------------------------------------------------
@@ -42,7 +37,7 @@ sub usage_desc {
 sub validate_args {
     my ($self, $opts, $args) = @_;
 
-    $self->usage_error("Must specify exactly one distribution path") if @{ $args } != 1;
+    $self->usage_error("Must specify exactly one package") if @{ $args } != 1;
 
     return 1;
 }
@@ -52,8 +47,12 @@ sub validate_args {
 sub execute {
     my ( $self, $opts, $args ) = @_;
 
+    my ($name, $version) = split m/ - /mx, $args->[0], 2;
+
     $self->pinto->new_batch( %{$opts} );
-    $self->pinto->add_action('Remove', %{$opts}, path => $args->[0]);
+
+    $self->pinto->add_action('Pin', %{$opts}, package => $name,
+                                              version => $version || 0);
     my $result = $self->pinto->run_actions();
     print $result->to_string();
 
@@ -71,7 +70,7 @@ sub execute {
 
 =head1 NAME
 
-App::Pinto::Remote::Command::remove - remove a distribution from the remote repository
+App::Pinto::Remote::Command::pin - force a package into the index
 
 =head1 VERSION
 
@@ -79,38 +78,37 @@ version 0.028
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL remove [OPTIONS] DISTRIBUTION_PATH
+  pinto-remote --repos=URL pin [OPTIONS] PACKAGE
 
 =head1 DESCRIPTION
 
-This command removes a distribution from the repository.
+This command pins a package so that it will always appear in the index
+even if it is not the latest version, or a newer version is
+subsequently mirrored or imported.  You can pin the latest version of
+the package, or any arbitrary version of the package.
+
+Only one version of a package can be pinned at any one time.  If you
+pin C<Foo::Bar−1.0>, and then later pin C<Foo::Bar−2.0>, then
+C<Foo::Bar−1.0> immediately becomes unpinned.
+
+To directly unpin a package, so that the latest version appears in the
+index, please see the C<unpin> command.
 
 =head1 COMMAND ARGUMENTS
 
-The argument to this command is the file name of the distribution you
-wish to remove.  You must specify the complete file name, including
-version number and extension.  The precise identity of the
-distribution that will be removed depends on who you are.  So if you
-are C<JOE> and you ask to remove C<Foo-1.0.tar.gz> then you are really
-asking to remove C<J/JO/JOE/Foo-1.0.tar.gz>.
+To pin the latest version of a particular package, just give the name
+of the package.  For example:
 
-To remove a distribution that was added by another author, use the
-C<--author> option to change who you are.  Or you can just explicitly
-specify the full index path of the distribution.  So the following two
-examples are equivalent:
+  Foo::Bar
 
-  $> pinto-remote --repos=http://my.server:3000 remove --author=SUSAN Foo-1.0.tar.gz
-  $> pinto-remote --repos=http://my.server:3000 remove S/SU/SUSAN/Foo-1.0.tar.gz
+To pin a particular version of a package, append ’−’ and the version
+number to the name.  For example:
+
+  Foo::Bar−1.2
 
 =head1 COMMAND OPTIONS
 
 =over 4
-
-=item --author=NAME
-
-Sets your identity as a distribution author.  The C<NAME> can only be
-alphanumeric characters only (no spaces) and will be forced to
-uppercase.  The default is your username.
 
 =item --message=MESSAGE
 

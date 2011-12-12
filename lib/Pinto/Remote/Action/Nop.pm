@@ -8,7 +8,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.026'; # VERSION
+our $VERSION = '0.028'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ Pinto::Remote::Action::Nop - Run a no-op on a remote repository
 
 =head1 VERSION
 
-version 0.026
+version 0.028
 
 =head1 AUTHOR
 

@@ -2,7 +2,7 @@ NAME
     Pinto::Remote - Interact with a remote Pinto repository
 
 VERSION
-    version 0.026
+    version 0.028
 
 SUPPORT
   Perldoc

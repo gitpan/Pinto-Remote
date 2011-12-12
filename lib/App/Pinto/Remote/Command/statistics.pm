@@ -1,6 +1,6 @@
-package App::Pinto::Remote::Command::ping;
+package App::Pinto::Remote::Command::statistics;
 
-# ABSTRACT: check if a remote Pinto repository is alive
+# ABSTRACT: report statistics about the remote repository
 
 use strict;
 use warnings;
@@ -13,7 +13,17 @@ our $VERSION = '0.028'; # VERSION
 
 #-------------------------------------------------------------------------------
 
-sub command_names { return qw( ping nop ) }
+sub command_names { return qw( statistics stats ) }
+
+#-------------------------------------------------------------------------------
+
+sub opt_spec {
+    my ($self, $app) = @_;
+
+    return (
+        [ 'format=s'  => 'Format specification (see documentation)'],
+    );
+}
 
 #-------------------------------------------------------------------------------
 
@@ -21,6 +31,10 @@ sub validate_args {
     my ($self, $opts, $args) = @_;
 
     $self->usage_error('Arguments are not allowed') if @{ $args };
+
+    ## no critic qw(StringyEval)
+    ## Double-interpolate, to expand \n, \t, etc.
+    $opts->{format} = eval qq{"$opts->{format}"} if $opts->{format};
 
     return 1;
 }
@@ -31,9 +45,8 @@ sub execute {
     my ($self, $opts, $args) = @_;
 
     $self->pinto->new_batch( %{$opts} );
-    $self->pinto->add_action('Nop', %{$opts});
+    $self->pinto->add_action('Statistics', %{$opts});
     my $result = $self->pinto->run_actions();
-    print $result->to_string();
 
     return $result->is_success() ? 0 : 1;
 }
@@ -49,7 +62,7 @@ sub execute {
 
 =head1 NAME
 
-App::Pinto::Remote::Command::ping - check if a remote Pinto repository is alive
+App::Pinto::Remote::Command::statistics - report statistics about the remote repository
 
 =head1 VERSION
 
@@ -57,12 +70,13 @@ version 0.028
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL ping
+  pinto-remote --repos=URL statistics [OPTIONS]
 
 =head1 DESCRIPTION
 
-This command checks that a remote L<Pinto::Server> is alive and
-currently able to get a lock on the repository.
+This command reports some statistics about the remote Pinto repository.
+
+Note this command never changes the state of your repository.
 
 =head1 COMMAND ARGUMENTS
 
@@ -70,7 +84,13 @@ None.
 
 =head1 COMMAND OPTIONS
 
-None.
+=over 4
+
+=item format
+
+This option is not functional yet.
+
+=back
 
 =head1 AUTHOR
 

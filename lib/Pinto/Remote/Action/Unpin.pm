@@ -1,8 +1,9 @@
-package Pinto::Remote::Action::Remove;
+package Pinto::Remote::Action::Unpin;
 
-# ABSTRACT: Remove a package from a remote repository
+# ABSTRACT: Loosen a package that has been pinned
 
 use Moose;
+
 use MooseX::Types::Moose qw(Str);
 
 use namespace::autoclean;
@@ -17,11 +18,7 @@ extends qw(Pinto::Remote::Action);
 
 #------------------------------------------------------------------------------
 
-with qw(Pinto::Interface::Authorable);
-
-#------------------------------------------------------------------------------
-
-has path     => (
+has package  => (
     is       => 'ro',
     isa      => Str,
     required => 1,
@@ -50,14 +47,13 @@ override execute => sub {
 
         Content => [
 
-            author    => $self->author(),
-            path      => $self->path(),
+            package   => $self->package(),
             message   => $self->message(),
             tag       => $self->tag(),
         ],
     );
 
-    return $self->post('remove', %ua_args);
+    return $self->post('unpin', %ua_args);
 };
 
 #------------------------------------------------------------------------------
@@ -75,7 +71,7 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Action::Remove - Remove a package from a remote repository
+Pinto::Remote::Action::Unpin - Loosen a package that has been pinned
 
 =head1 VERSION
 

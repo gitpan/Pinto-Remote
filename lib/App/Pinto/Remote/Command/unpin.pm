@@ -1,6 +1,6 @@
-package App::Pinto::Remote::Command::add;
+package App::Pinto::Remote::Command::unpin;
 
-# ABSTRACT: add a distribution to the remote repository
+# ABSTRACT: loosen a package that has been pinned
 
 use strict;
 use warnings;
@@ -13,15 +13,10 @@ our $VERSION = '0.028'; # VERSION
 
 #-------------------------------------------------------------------------------
 
-sub command_names { return qw( add inject ) }
-
-#-------------------------------------------------------------------------------
-
 sub opt_spec {
     my ($self, $app) = @_;
 
     return (
-        [ 'author=s'    => 'Your (alphanumeric) author ID' ],
         [ 'message|m=s' => 'Prepend a message to the VCS log' ],
         [ 'tag=s'       => 'Specify a VCS tag name' ],
     );
@@ -34,7 +29,7 @@ sub usage_desc {
 
     my ($command) = $self->command_names();
 
-    return "%c --repos=URL $command [OPTIONS] ARCHIVE_FILE";
+    return "%c --repos=URL $command [OPTIONS] PACKAGE";
 }
 
 #-------------------------------------------------------------------------------
@@ -42,7 +37,7 @@ sub usage_desc {
 sub validate_args {
     my ($self, $opts, $args) = @_;
 
-    $self->usage_error("Must specify exactly one archive file") if @{ $args } != 1;
+    $self->usage_error("Must specify exactly one package") if @{ $args } != 1;
 
     return 1;
 }
@@ -53,7 +48,7 @@ sub execute {
     my ( $self, $opts, $args ) = @_;
 
     $self->pinto->new_batch( %{$opts} );
-    $self->pinto->add_action('Add', %{$opts}, archive => $args->[0]);
+    $self->pinto->add_action('Unpin', %{$opts}, package => $args->[0]);
     my $result = $self->pinto->run_actions();
     print $result->to_string();
 
@@ -71,7 +66,7 @@ sub execute {
 
 =head1 NAME
 
-App::Pinto::Remote::Command::add - add a distribution to the remote repository
+App::Pinto::Remote::Command::unpin - loosen a package that has been pinned
 
 =head1 VERSION
 
@@ -79,44 +74,35 @@ version 0.028
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL add [OPTIONS] ARCHIVE_FILE
+  pinto-remote --repos=URL unpin [OPTIONS] PACKAGE
 
 =head1 DESCRIPTION
 
-This command adds a local distribution archive to the repository.
-When a local distribution is first added to the repository, the author
-becomes the owner of the distribution.  Thereafter, only the same
-author can add a new version of that distribution. [Technically
-speaking, the author really owns the *packages* within the
-distribution, not the distribution itself.]
+This command unpins a package from the index, so that the latest
+version will appear in the index.  Note that local packages still have
+precedence over foreign packages.
 
 =head1 COMMAND ARGUMENTS
 
-The argument to this command is the path to the distribution archive
-file that you wish to add.  This file must exist and must be readable.
+The arguments to this command are just package names.  For example:
+
+  Foo::Bar
 
 =head1 COMMAND OPTIONS
 
 =over 4
 
-=item --author=NAME
-
-Sets your identity as a distribution author.  The C<NAME> can only be
-alphanumeric characters only (no spaces) and will be forced to
-uppercase.  The default is your username.
-
 =item --message=MESSAGE
 
-Prepends the C<MESSAGE> to the VCS log message that L<Pinto>
-generates.  This is only relevant if you are using a VCS-based storage
-mechanism for L<Pinto>.
+Prepends the MESSAGE to the VCS log message that L<Pinto> generates.
+This is only relevant if you are using a VCS-based storage mechanism
+for L<Pinto>.
 
 =item --tag=NAME
 
-Instructs L<Pinto> to tag the head revision of the repository at
-C<NAME>.  This is only relevant if you are using a VCS-based storage
-mechanism.  The syntax of the NAME depends on the type of VCS you are
-using.
+Instructs L<Pinto> to tag the head revision of the repository at NAME.
+This is only relevant if you are using a VCS-based storage mechanism.
+The syntax of the NAME depends on the type of VCS you are using.
 
 =back
 

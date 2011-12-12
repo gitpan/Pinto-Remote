@@ -8,7 +8,7 @@ use warnings;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.026'; # VERSION
+our $VERSION = '0.028'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ pinto-remote - Interact with a remote a Pinto repository
 
 =head1 VERSION
 
-version 0.026
+version 0.028
 
 =head1 SYNOPSIS
 

@@ -1,10 +1,13 @@
-package Pinto::Remote::Action::Remove;
+package Pinto::Remote::Action::Pin;
 
-# ABSTRACT: Remove a package from a remote repository
+# ABSTRACT: Force a package into the index
 
 use Moose;
-use MooseX::Types::Moose qw(Str);
 
+use MooseX::Types::Moose qw(Str);
+use Pinto::Types qw(Vers);
+
+use version;
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
@@ -17,14 +20,18 @@ extends qw(Pinto::Remote::Action);
 
 #------------------------------------------------------------------------------
 
-with qw(Pinto::Interface::Authorable);
-
-#------------------------------------------------------------------------------
-
-has path     => (
+has package  => (
     is       => 'ro',
     isa      => Str,
     required => 1,
+);
+
+
+has version  => (
+    is       => 'ro',
+    isa      => Vers,
+    default  => 0,
+    coerce   => 1,
 );
 
 
@@ -50,14 +57,14 @@ override execute => sub {
 
         Content => [
 
-            author    => $self->author(),
-            path      => $self->path(),
+            package   => $self->package(),
+            version   => $self->version->stringify(),
             message   => $self->message(),
             tag       => $self->tag(),
         ],
     );
 
-    return $self->post('remove', %ua_args);
+    return $self->post('pin', %ua_args);
 };
 
 #------------------------------------------------------------------------------
@@ -75,7 +82,7 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Action::Remove - Remove a package from a remote repository
+Pinto::Remote::Action::Pin - Force a package into the index
 
 =head1 VERSION
 

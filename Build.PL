@@ -20,7 +20,7 @@ my %module_build_args = (
     "Jeffrey Ryan Thalhammer <jeff\@imaginative-software.com>"
   ],
   "dist_name" => "Pinto-Remote",
-  "dist_version" => "0.026",
+  "dist_version" => "0.028",
   "license" => "perl",
   "module_name" => "Pinto::Remote",
   "recommends" => {},
@@ -40,6 +40,7 @@ my %module_build_args = (
     "overload" => 0,
     "perl" => "5.006",
     "strict" => 0,
+    "version" => 0,
     "warnings" => 0
   },
   "script_files" => [
