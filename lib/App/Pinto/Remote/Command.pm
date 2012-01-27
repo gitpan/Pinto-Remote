@@ -11,7 +11,7 @@ use App::Cmd::Setup -command;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.028'; # VERSION
+our $VERSION = '0.030'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ sub usage_desc {
 
     my ($command) = $self->command_names();
 
-    return "%c --repos=URL $command [OPTIONS] [ARGS]"
+    return "%c --root=URL $command [OPTIONS] [ARGS]"
 }
 
 #-----------------------------------------------------------------------------
@@ -45,7 +45,7 @@ App::Pinto::Remote::Command - Base class for pinto-remote commands
 
 =head1 VERSION
 
-version 0.028
+version 0.030
 
 =head1 AUTHOR
 

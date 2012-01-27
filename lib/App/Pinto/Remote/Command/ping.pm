@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.028'; # VERSION
+our $VERSION = '0.030'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -53,11 +53,11 @@ App::Pinto::Remote::Command::ping - check if a remote Pinto repository is alive
 
 =head1 VERSION
 
-version 0.028
+version 0.030
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL ping
+  pinto-remote --root=URL ping
 
 =head1 DESCRIPTION
 

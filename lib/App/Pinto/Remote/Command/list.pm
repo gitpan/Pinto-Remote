@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.028'; # VERSION
+our $VERSION = '0.030'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -68,11 +68,11 @@ App::Pinto::Remote::Command::list - list the contents of the remote repository
 
 =head1 VERSION
 
-version 0.028
+version 0.030
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL list [OPTIONS]
+  pinto-remote --root=URL list [OPTIONS]
 
 =head1 DESCRIPTION
 
@@ -136,9 +136,9 @@ the default format looks like.
 
   %x%m%s %-38n %v %p\n
 
-=item −p=PATTERN
+=item -p=PATTERN
 
-=item −−packages=PATTERN
+=item --packages=PATTERN
 
 Limits the listing to records where the package name matches
 "PATTERN".  Note that "PATTERN" is just a plain string, not a regular

@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.028'; # VERSION
+our $VERSION = '0.030'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ sub usage_desc {
 
     my ($command) = $self->command_names();
 
-    return "%c --repos=URL $command [OPTIONS] DISTRIBUTION_PATH";
+    return "%c --root=URL $command [OPTIONS] DISTRIBUTION_PATH";
 }
 
 #-------------------------------------------------------------------------------
@@ -75,11 +75,11 @@ App::Pinto::Remote::Command::remove - remove a distribution from the remote repo
 
 =head1 VERSION
 
-version 0.028
+version 0.030
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL remove [OPTIONS] DISTRIBUTION_PATH
+  pinto-remote --root=URL remove [OPTIONS] DISTRIBUTION_PATH
 
 =head1 DESCRIPTION
 
@@ -99,8 +99,8 @@ C<--author> option to change who you are.  Or you can just explicitly
 specify the full index path of the distribution.  So the following two
 examples are equivalent:
 
-  $> pinto-remote --repos=http://my.server:3000 remove --author=SUSAN Foo-1.0.tar.gz
-  $> pinto-remote --repos=http://my.server:3000 remove S/SU/SUSAN/Foo-1.0.tar.gz
+  $> pinto-remote --root=http://my.server:3000 remove --author=SUSAN Foo-1.0.tar.gz
+  $> pinto-remote --root=http://my.server:3000 remove S/SU/SUSAN/Foo-1.0.tar.gz
 
 =head1 COMMAND OPTIONS
 

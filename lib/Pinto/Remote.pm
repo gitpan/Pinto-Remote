@@ -14,7 +14,7 @@ use namespace::autoclean;
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.028'; # VERSION
+our $VERSION = '0.030'; # VERSION
 
 #------------------------------------------------------------------------------
 # Moose attributes
@@ -22,9 +22,9 @@ our $VERSION = '0.028'; # VERSION
 has config    => (
     is        => 'ro',
     isa       => 'Pinto::Remote::Config',
+    handles   => [ qw(root) ],
     required  => 1,
 );
-
 
 has _batch => (
     is         => 'ro',
@@ -105,7 +105,7 @@ Pinto::Remote - Interact with a remote Pinto repository
 
 =head1 VERSION
 
-version 0.028
+version 0.030
 
 =head1 SUPPORT
 

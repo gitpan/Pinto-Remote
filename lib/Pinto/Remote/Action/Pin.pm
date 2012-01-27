@@ -12,7 +12,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.028'; # VERSION
+our $VERSION = '0.030'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -86,7 +86,7 @@ Pinto::Remote::Action::Pin - Force a package into the index
 
 =head1 VERSION
 
-version 0.028
+version 0.030
 
 =head1 AUTHOR
 

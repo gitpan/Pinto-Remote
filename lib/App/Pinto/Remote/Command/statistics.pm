@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.028'; # VERSION
+our $VERSION = '0.030'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -66,11 +66,11 @@ App::Pinto::Remote::Command::statistics - report statistics about the remote rep
 
 =head1 VERSION
 
-version 0.028
+version 0.030
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL statistics [OPTIONS]
+  pinto-remote --root=URL statistics [OPTIONS]
 
 =head1 DESCRIPTION
 

@@ -11,7 +11,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.028'; # VERSION
+our $VERSION = '0.030'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ sub post {
     my ($self, $name, %args) = @_;
 
     my $ua       = LWP::UserAgent->new();
-    my $url      = $self->config->repos() . "/action/$name";
+    my $url      = $self->config->root() . "/action/$name";
     my $response = $ua->post($url, %args);
 
     return $response;
@@ -60,7 +60,7 @@ Pinto::Remote::Action - Base class for remote Actions
 
 =head1 VERSION
 
-version 0.028
+version 0.030
 
 =head1 AUTHOR
 

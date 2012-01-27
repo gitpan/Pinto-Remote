@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.028'; # VERSION
+our $VERSION = '0.030'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ sub usage_desc {
 
     my ($command) = $self->command_names();
 
-    return "%c --repos=URL $command [OPTIONS] PACKAGE";
+    return "%c --root=URL $command [OPTIONS] PACKAGE";
 }
 
 #-------------------------------------------------------------------------------
@@ -74,11 +74,11 @@ App::Pinto::Remote::Command::pin - force a package into the index
 
 =head1 VERSION
 
-version 0.028
+version 0.030
 
 =head1 SYNOPSIS
 
-  pinto-remote --repos=URL pin [OPTIONS] PACKAGE
+  pinto-remote --root=URL pin [OPTIONS] PACKAGE
 
 =head1 DESCRIPTION
 
