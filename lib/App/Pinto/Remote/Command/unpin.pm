@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.033'; # VERSION
+our $VERSION = '0.034'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ App::Pinto::Remote::Command::unpin - loosen a package that has been pinned
 
 =head1 VERSION
 
-version 0.033
+version 0.034
 
 =head1 SYNOPSIS
 

@@ -1,3 +1,9 @@
+0.034     2012-03-17 08:51:16 America/Los_Angeles
+
+    Bug Fixes:
+
+    pinto-remote had a broken shebang.
+
 0.033     2012-03-17 01:15:51 America/Los_Angeles
 
     pinto-remote add now supports --norecurse, just like pinto-admin

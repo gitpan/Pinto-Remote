@@ -63,95 +63,95 @@
    "provides" : {
       "App::Pinto::Remote" : {
          "file" : "lib/App/Pinto/Remote.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "App::Pinto::Remote::Command" : {
          "file" : "lib/App/Pinto/Remote/Command.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "App::Pinto::Remote::Command::add" : {
          "file" : "lib/App/Pinto/Remote/Command/add.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "App::Pinto::Remote::Command::list" : {
          "file" : "lib/App/Pinto/Remote/Command/list.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "App::Pinto::Remote::Command::manual" : {
          "file" : "lib/App/Pinto/Remote/Command/manual.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "App::Pinto::Remote::Command::pin" : {
          "file" : "lib/App/Pinto/Remote/Command/pin.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "App::Pinto::Remote::Command::ping" : {
          "file" : "lib/App/Pinto/Remote/Command/ping.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "App::Pinto::Remote::Command::remove" : {
          "file" : "lib/App/Pinto/Remote/Command/remove.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "App::Pinto::Remote::Command::statistics" : {
          "file" : "lib/App/Pinto/Remote/Command/statistics.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "App::Pinto::Remote::Command::unpin" : {
          "file" : "lib/App/Pinto/Remote/Command/unpin.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "App::Pinto::Remote::Command::version" : {
          "file" : "lib/App/Pinto/Remote/Command/version.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote" : {
          "file" : "lib/Pinto/Remote.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Action" : {
          "file" : "lib/Pinto/Remote/Action.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Action::Add" : {
          "file" : "lib/Pinto/Remote/Action/Add.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Action::List" : {
          "file" : "lib/Pinto/Remote/Action/List.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Action::Nop" : {
          "file" : "lib/Pinto/Remote/Action/Nop.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Action::Pin" : {
          "file" : "lib/Pinto/Remote/Action/Pin.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Action::Remove" : {
          "file" : "lib/Pinto/Remote/Action/Remove.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Action::Statistics" : {
          "file" : "lib/Pinto/Remote/Action/Statistics.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Action::Unpin" : {
          "file" : "lib/Pinto/Remote/Action/Unpin.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Batch" : {
          "file" : "lib/Pinto/Remote/Batch.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Config" : {
          "file" : "lib/Pinto/Remote/Config.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       },
       "Pinto::Remote::Result" : {
          "file" : "lib/Pinto/Remote/Result.pm",
-         "version" : "0.033"
+         "version" : "0.034"
       }
    },
    "release_status" : "stable",
@@ -165,6 +165,6 @@
          "web" : "https://github.com/thaljef/Pinto-Remote"
       }
    },
-   "version" : "0.033"
+   "version" : "0.034"
 }
 
