@@ -1,15 +1,21 @@
+0.033     2012-03-17 01:15:51 America/Los_Angeles
+
+    pinto-remote add now supports --norecurse, just like pinto-admin
+    (Karen Etheridge).  To use this, you'll need version 0.033 or
+    better of both Pinto and Pinto::Server.
+
 0.030     2012-01-26 22:27:48 America/Los_Angeles
 
-    The --repos option on pinto-remote has been officially
-    renamed to --root.  This was done to be symmetrical
-    with the Pinto API.  The old --repos option will *not*
-    be supported for backward compatibility.
+    The --repos option on pinto-remote has been officially renamed to
+    --root.  This was done to be symmetrical with the Pinto API.  The
+    old --repos option will *not* be supported for backward
+    compatibility.
 
 0.028     2011-12-12 00:18:43 America/Los_Angeles
 
-    Added the 'statistics', 'pin' and 'unpin' commands.  These
-    are identical to the ones in pinto-admin.  You need to 
-    run Pinto::Server 0.028 or newer to use these commands.
+    Added the 'statistics', 'pin' and 'unpin' commands.  These are
+    identical to the ones in pinto-admin.  You need to run
+    Pinto::Server 0.028 or newer to use these commands.
 
     The 'list' command now supports the -p and -d options to limit the
     listing to packages or distributions that match a PATTERN.
@@ -29,8 +35,8 @@
 
     * Bug Fixes:
 
-    The "list" command had become broken because i forgot
-    to import List::MoreUtils.  I'm surprised it compiled at all.
+    The "list" command had become broken because i forgot to import
+    List::MoreUtils.  I'm surprised it compiled at all.
 
 0.019     2011-08-30 01:16:12 America/Los_Angeles
 
@@ -38,13 +44,13 @@
 
     The --host option is now called --server or just -s.
 
-    If you forget to put http:// in front of your server
-    name, pinto-remote will kindly do it for you.
+    If you forget to put http:// in front of your server name,
+    pinto-remote will kindly do it for you.
 
     * Other Changes:
 
-    Now requires Pinto-Common 0.019, which has the
-    Pinto::Constants library.
+    Now requires Pinto-Common 0.019, which has the Pinto::Constants
+    library.
 
 0.018     2011-08-24 04:05:49 America/Los_Angeles
 
@@ -54,8 +60,8 @@
 
 0.017     2011-08-24 00:19:31 America/Los_Angeles
 
-    pinto-remote[1] is now zero-conf.  However, you must
-    always specify the --host on the command line.
+    pinto-remote[1] is now zero-conf.  However, you must always
+    specify the --host on the command line.
 
     Added support the different types of "list" actions.
 

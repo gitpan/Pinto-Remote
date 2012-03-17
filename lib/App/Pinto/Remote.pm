@@ -10,7 +10,7 @@ use App::Cmd::Setup -app;
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.030'; # VERSION
+our $VERSION = '0.033'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -59,7 +59,7 @@ App::Pinto::Remote - Command line driver for Pinto::Remote
 
 =head1 VERSION
 
-version 0.030
+version 0.033
 
 =head1 METHODS
 

@@ -13,7 +13,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.030'; # VERSION
+our $VERSION = '0.033'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -77,7 +77,7 @@ Pinto::Remote::Action::Statistics - Report statistics about a remote repository
 
 =head1 VERSION
 
-version 0.030
+version 0.033
 
 =head1 AUTHOR
 

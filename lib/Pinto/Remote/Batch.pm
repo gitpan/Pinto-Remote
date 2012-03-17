@@ -8,7 +8,7 @@ use Pinto::Remote::Result;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.030'; # VERSION
+our $VERSION = '0.033'; # VERSION
 
 #------------------------------------------------------------------------------
 # Moose attributes
@@ -64,7 +64,7 @@ Pinto::Remote::Batch - Runs a series of remote actions
 
 =head1 VERSION
 
-version 0.030
+version 0.033
 
 =head1 AUTHOR
 

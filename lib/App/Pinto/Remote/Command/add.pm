@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.030'; # VERSION
+our $VERSION = '0.033'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -23,7 +23,9 @@ sub opt_spec {
     return (
         [ 'author=s'    => 'Your (alphanumeric) author ID' ],
         [ 'message|m=s' => 'Prepend a message to the VCS log' ],
+        [ 'norecurse'   => 'Do not recursively import prereqs' ],
         [ 'tag=s'       => 'Specify a VCS tag name' ],
+
     );
 }
 
@@ -75,7 +77,7 @@ App::Pinto::Remote::Command::add - add a distribution to the remote repository
 
 =head1 VERSION
 
-version 0.030
+version 0.033
 
 =head1 SYNOPSIS
 
@@ -104,6 +106,13 @@ file that you wish to add.  This file must exist and must be readable.
 Sets your identity as a distribution author.  The C<NAME> can only be
 alphanumeric characters only (no spaces) and will be forced to
 uppercase.  The default is your username.
+
+=item --norecurse
+
+Prevents L<Pinto> from recursively importing distributions required to
+satisfy the prerequisites of the added distribution.  Imported
+distributions are pulled from whatever remote repositories are
+configured as the C<source> for the remove repository.
 
 =item --message=MESSAGE
 

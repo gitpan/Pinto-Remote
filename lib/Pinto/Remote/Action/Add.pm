@@ -4,14 +4,14 @@ package Pinto::Remote::Action::Add;
 
 use Moose;
 
-use MooseX::Types::Moose qw(Str);
+use MooseX::Types::Moose qw(Str Bool);
 use Pinto::Types qw(File);
 
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.030'; # VERSION
+our $VERSION = '0.033'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -28,6 +28,13 @@ has archive  => (
     isa      => File,
     coerce   => 1,
     required => 1,
+);
+
+
+has norecurse => (
+   is      => 'ro',
+   isa     => Bool,
+   default => 0,
 );
 
 
@@ -55,6 +62,7 @@ override execute => sub {
 
             author    => $self->author(),
             archive   => [ $self->archive->stringify() ],
+            norecurse => $self->norecurse(),
             message   => $self->message(),
             tag       => $self->tag(),
         ],
@@ -82,7 +90,7 @@ Pinto::Remote::Action::Add - Add a distribution to a remote repository
 
 =head1 VERSION
 
-version 0.030
+version 0.033
 
 =head1 AUTHOR
 
