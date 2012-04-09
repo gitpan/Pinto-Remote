@@ -1,3 +1,27 @@
+0.037     2012-04-09 14:08:28 America/Los_Angeles
+
+    New Features:
+
+    pinto-remote (and Pinto::Remote) can now do almost all the actions
+    that pinto-admin (and Pinto::Admin) are capable of.  The only
+    exceptions are "create" (which doesn't make sense to do remotely)
+    and "purge" (which is too dangerous to do remotely).
+
+    pinto-remote now supports --username and --password options, for
+    passing authentication credentials to pinto-server. To properly
+    authenticate with the server, you'll need version 0.036 of
+    Pinto::Server or newer. (Karen Etheridge)
+
+    The value for the --author option now defaults to the 'user'
+    specified in your ~/.pause file.  If that file does not exist,
+    then it still defaults to your current login name.
+
+    pinto-remote now supports --verbose and --quiet options, so you
+    can see more (or less) diagnostic messages from the server.  And
+    you can use the --nocolor option to disable colorization of
+    messages.  Diagnostic messages will now go to STDERR, so you can
+    cleanly redirect the rest of the output into a file.
+
 0.034     2012-03-17 08:51:16 America/Los_Angeles
 
     Bug Fixes:

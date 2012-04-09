@@ -1,6 +1,6 @@
-# ABSTRACT: Report statistics about a remote repository
+# ABSTRACT: Remove all outdated distributions from the repository
 
-package Pinto::Remote::Action::Statistics;
+package Pinto::Remote::Action::Clean;
 
 use Moose;
 
@@ -16,13 +16,15 @@ extends qw( Pinto::Remote::Action );
 
 #------------------------------------------------------------------------------
 
-with qw( Pinto::Interface::Action::Statistics );
+with qw( Pinto::Role::Interface::Action::Clean
+         Pinto::Remote::Role::Interface::CommittableAction );
 
 #------------------------------------------------------------------------------
 
 __PACKAGE__->meta->make_immutable();
 
 #------------------------------------------------------------------------------
+
 1;
 
 
@@ -33,7 +35,7 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Action::Statistics - Report statistics about a remote repository
+Pinto::Remote::Action::Clean - Remove all outdated distributions from the repository
 
 =head1 VERSION
 
@@ -54,4 +56,3 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
-

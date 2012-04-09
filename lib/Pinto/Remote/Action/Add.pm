@@ -1,75 +1,23 @@
+# ABSTRACT: Add a distribution to a the repository
+
 package Pinto::Remote::Action::Add;
 
-# ABSTRACT: Add a distribution to a remote repository
-
 use Moose;
-
-use MooseX::Types::Moose qw(Str Bool);
-use Pinto::Types qw(File);
 
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #------------------------------------------------------------------------------
 
-extends qw(Pinto::Remote::Action);
+extends qw( Pinto::Remote::Action );
 
 #------------------------------------------------------------------------------
 
-with qw(Pinto::Interface::Authorable);
-
-#------------------------------------------------------------------------------
-
-has archive  => (
-    is       => 'ro',
-    isa      => File,
-    coerce   => 1,
-    required => 1,
-);
-
-
-has norecurse => (
-   is      => 'ro',
-   isa     => Bool,
-   default => 0,
-);
-
-
-has message => (
-    is      => 'ro',
-    isa     => Str,
-);
-
-
-has tag => (
-    is      => 'ro',
-    isa     => Str,
-);
-
-#------------------------------------------------------------------------------
-
-override execute => sub {
-    my ($self) = @_;
-
-    my %ua_args = (
-
-        Content_Type => 'form-data',
-
-        Content => [
-
-            author    => $self->author(),
-            archive   => [ $self->archive->stringify() ],
-            norecurse => $self->norecurse(),
-            message   => $self->message(),
-            tag       => $self->tag(),
-        ],
-    );
-
-    return $self->post('add', %ua_args);
-};
+with qw( Pinto::Role::Interface::Action::Add
+         Pinto::Remote::Role::Interface::CommittableAction );
 
 #------------------------------------------------------------------------------
 
@@ -86,11 +34,11 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Action::Add - Add a distribution to a remote repository
+Pinto::Remote::Action::Add - Add a distribution to a the repository
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 AUTHOR
 

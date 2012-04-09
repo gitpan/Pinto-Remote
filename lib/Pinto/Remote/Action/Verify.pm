@@ -1,8 +1,10 @@
-# ABSTRACT: Report statistics about a remote repository
+# ABSTRACT: Verify all distributions are present in the repository
 
-package Pinto::Remote::Action::Statistics;
+package Pinto::Remote::Action::Verify;
 
 use Moose;
+
+use Pinto::Util;
 
 use namespace::autoclean;
 
@@ -16,13 +18,14 @@ extends qw( Pinto::Remote::Action );
 
 #------------------------------------------------------------------------------
 
-with qw( Pinto::Interface::Action::Statistics );
+with qw( Pinto::Interface::Action::Verify );
 
 #------------------------------------------------------------------------------
 
 __PACKAGE__->meta->make_immutable();
 
 #------------------------------------------------------------------------------
+
 1;
 
 
@@ -33,7 +36,7 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Action::Statistics - Report statistics about a remote repository
+Pinto::Remote::Action::Verify - Verify all distributions are present in the repository
 
 =head1 VERSION
 
@@ -54,4 +57,3 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
-

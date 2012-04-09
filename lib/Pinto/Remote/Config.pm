@@ -3,14 +3,18 @@ package Pinto::Remote::Config;
 # ABSTRACT: Internal configuration for Pinto::Remote
 
 use Moose;
+use MooseX::Types::Moose qw(Maybe Str);
+
+use URI;
 
 use Pinto::Types qw(Uri);
+use Pinto::Constants qw($PINTO_SERVER_DEFAULT_ROOT $PINTO_SERVER_DEFAULT_PORT);
 
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -18,26 +22,41 @@ has root => (
     is       => 'ro',
     isa      => Uri,
     coerce   => 1,
-    required => 1,
+    default  => sub { URI->new($PINTO_SERVER_DEFAULT_ROOT) },
+);
+
+
+has username => (
+    is      => 'ro',
+    isa     => Str,
+    default => sub { $ENV{USER} },
+);
+
+
+has password => (
+    is      => 'ro',
+    isa     => Maybe[Str],
 );
 
 #------------------------------------------------------------------------------
 
-sub BUILDARGS {
-    my ($class, %args) = @_;
+around BUILDARGS => sub {
+    my $orig  = shift;
+    my $class = shift;
+
+    my $args = $class->$orig(@_);
 
     # Add scheme and default port, if the repository root URL doesn't
     # already have them.  Gosh, aren't we helpful :)
 
-    $args{root} = 'http://' . $args{root}
-        if $args{root} !~ m{^ https?:// }mx;
+    $args->{root} = 'http://' . $args->{root}
+        if defined $args->{root} && $args->{root} !~ m{^ https?:// }mx;
 
-    $args{root} = $args{root} . ':3000'
-        if $args{root} !~ m{ :\d+ $}mx;
+    $args->{root} = $args->{root} . ':' . $PINTO_SERVER_DEFAULT_PORT
+        if defined $args->{root} && $args->{root} !~ m{ :\d+ $}mx;
 
-    return \%args;
-
-}
+    return $args;
+};
 
 #------------------------------------------------------------------------------
 
@@ -58,7 +77,7 @@ Pinto::Remote::Config - Internal configuration for Pinto::Remote
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 AUTHOR
 

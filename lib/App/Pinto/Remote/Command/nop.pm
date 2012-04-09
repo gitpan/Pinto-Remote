@@ -1,4 +1,4 @@
-package App::Pinto::Remote::Command::ping;
+package App::Pinto::Remote::Command::nop;
 
 # ABSTRACT: check if a remote Pinto repository is alive
 
@@ -9,11 +9,11 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #-------------------------------------------------------------------------------
 
-sub command_names { return qw( ping nop ) }
+sub command_names { return qw(nop ping) }
 
 #-------------------------------------------------------------------------------
 
@@ -23,19 +23,6 @@ sub validate_args {
     $self->usage_error('Arguments are not allowed') if @{ $args };
 
     return 1;
-}
-
-#-------------------------------------------------------------------------------
-
-sub execute {
-    my ($self, $opts, $args) = @_;
-
-    $self->pinto->new_batch( %{$opts} );
-    $self->pinto->add_action('Nop', %{$opts});
-    my $result = $self->pinto->run_actions();
-    print $result->to_string();
-
-    return $result->is_success() ? 0 : 1;
 }
 
 #-------------------------------------------------------------------------------
@@ -49,15 +36,15 @@ sub execute {
 
 =head1 NAME
 
-App::Pinto::Remote::Command::ping - check if a remote Pinto repository is alive
+App::Pinto::Remote::Command::nop - check if a remote Pinto repository is alive
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 SYNOPSIS
 
-  pinto-remote --root=URL ping
+  pinto-remote --root=URL nop
 
 =head1 DESCRIPTION
 

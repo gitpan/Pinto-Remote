@@ -1,8 +1,10 @@
-# ABSTRACT: Report statistics about a remote repository
+# ABSTRACT: Interface for Actions that make committable changes
 
-package Pinto::Remote::Action::Statistics;
+package Pinto::Remote::Role::Interface::CommittableAction;
 
-use Moose;
+use Moose::Role;
+
+use MooseX::Types::Moose qw(Str);
 
 use namespace::autoclean;
 
@@ -12,15 +14,22 @@ our $VERSION = '0.037'; # VERSION
 
 #------------------------------------------------------------------------------
 
-extends qw( Pinto::Remote::Action );
+with qw( Pinto::Meta::Attribute::Trait::Postable );
 
 #------------------------------------------------------------------------------
 
-with qw( Pinto::Interface::Action::Statistics );
+has message => (
+    is      => 'ro',
+    isa     => Str,
+    traits  => [ qw(Postable) ],
+);
 
-#------------------------------------------------------------------------------
 
-__PACKAGE__->meta->make_immutable();
+has tag => (
+    is      => 'ro',
+    isa     => Str,
+    traits  => [ qw(Postable) ],
+);
 
 #------------------------------------------------------------------------------
 1;
@@ -33,7 +42,7 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Action::Statistics - Report statistics about a remote repository
+Pinto::Remote::Role::Interface::CommittableAction - Interface for Actions that make committable changes
 
 =head1 VERSION
 
@@ -54,4 +63,3 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
-

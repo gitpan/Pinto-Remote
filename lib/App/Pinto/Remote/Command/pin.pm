@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -54,7 +54,6 @@ sub execute {
     $self->pinto->add_action('Pin', %{$opts}, package => $name,
                                               version => $version || 0);
     my $result = $self->pinto->run_actions();
-    print $result->to_string();
 
     return $result->is_success() ? 0 : 1;
 }
@@ -74,7 +73,7 @@ App::Pinto::Remote::Command::pin - force a package into the index
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 SYNOPSIS
 

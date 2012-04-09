@@ -8,7 +8,7 @@ use warnings;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -29,11 +29,11 @@ pinto-remote - Interact with a remote a Pinto repository
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 SYNOPSIS
 
-  pinto-remote --root=URL COMMAND [OPTIONS] [ARGS]
+  pinto-remote --root=URL [GLOBAL OPTIONS] COMMAND [OPTIONS] [ARGS]
 
   pinto-remote help COMMAND
 
@@ -59,9 +59,39 @@ The following options are available for all commands.
 =item --root=URL
 
 Specifies the root URL of your remote repository (i.e. this is where
-L<pinto-server> is listening.  You may omit the C<http://> part if you
-like.  And if you do not specify a port in your URL, then it defaults
-to default port used by L<pinto-server> (which is currently 3000).
+L<pinto-server> is listening).  You may omit the C<http://> part if
+you like.  And if you do not specify a port in your URL, then it
+defaults to default port used by L<pinto-server> (which is currently
+3000).  Alternatively, you can set the C<PINTO_REPOSITORY_ROOT>
+environment variable to the root URL of your remote repository.  If no
+root is specified, it defaults to C<http://localhost:3000>
+
+=item --username=USER
+
+Specifies the username to use for server authentication.  If not
+provided, and a --password is used, defaults to the current user
+login.
+
+=item --password=PASSWORD
+
+=item --password=-
+
+Specifies the password to use for server authentication. If not
+provided, no authentication is attempted. If C<PASSWORD> is the
+special character '-' then you'll be prompted to provide the actual
+password.
+
+=item −quiet | -q
+
+Report only fatal errors.  This option silently overrides the
+C<--verbose> options.
+
+=item --verbose | -v
+
+Display more diagnostic messages.  This switch can be repeated
+multiple times for greater effect.
+
+=back
 
 =head1 COMMANDS
 

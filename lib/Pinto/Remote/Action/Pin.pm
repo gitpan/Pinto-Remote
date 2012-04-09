@@ -1,18 +1,14 @@
-package Pinto::Remote::Action::Pin;
-
 # ABSTRACT: Force a package into the index
+
+package Pinto::Remote::Action::Pin;
 
 use Moose;
 
-use MooseX::Types::Moose qw(Str);
-use Pinto::Types qw(Vers);
-
-use version;
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -20,52 +16,8 @@ extends qw(Pinto::Remote::Action);
 
 #------------------------------------------------------------------------------
 
-has package  => (
-    is       => 'ro',
-    isa      => Str,
-    required => 1,
-);
-
-
-has version  => (
-    is       => 'ro',
-    isa      => Vers,
-    default  => 0,
-    coerce   => 1,
-);
-
-
-has message => (
-    is      => 'ro',
-    isa     => Str,
-);
-
-
-has tag => (
-    is      => 'ro',
-    isa     => Str,
-);
-
-#------------------------------------------------------------------------------
-
-override execute => sub {
-    my ($self) = @_;
-
-    my %ua_args = (
-
-        Content_Type => 'form-data',
-
-        Content => [
-
-            package   => $self->package(),
-            version   => $self->version->stringify(),
-            message   => $self->message(),
-            tag       => $self->tag(),
-        ],
-    );
-
-    return $self->post('pin', %ua_args);
-};
+with qw( Pinto::Role::Interface::Action::Pin
+         Pinto::Remote::Role::Interface::CommittableAction );
 
 #------------------------------------------------------------------------------
 
@@ -86,7 +38,7 @@ Pinto::Remote::Action::Pin - Force a package into the index
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 AUTHOR
 

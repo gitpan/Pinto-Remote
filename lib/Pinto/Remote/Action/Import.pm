@@ -1,6 +1,6 @@
-# ABSTRACT: Report statistics about a remote repository
+# ABSTRACT: Import a package (and its prerequisites) into the repository
 
-package Pinto::Remote::Action::Statistics;
+package Pinto::Remote::Action::Import;
 
 use Moose;
 
@@ -16,13 +16,15 @@ extends qw( Pinto::Remote::Action );
 
 #------------------------------------------------------------------------------
 
-with qw( Pinto::Interface::Action::Statistics );
+with qw( Pinto::Role::Interface::Action::Import
+         Pinto::Remote::Role::Interface::CommittableAction );
 
 #------------------------------------------------------------------------------
 
 __PACKAGE__->meta->make_immutable();
 
 #------------------------------------------------------------------------------
+
 1;
 
 
@@ -33,7 +35,7 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Action::Statistics - Report statistics about a remote repository
+Pinto::Remote::Action::Import - Import a package (and its prerequisites) into the repository
 
 =head1 VERSION
 
@@ -54,4 +56,3 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
-

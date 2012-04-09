@@ -5,19 +5,35 @@ package App::Pinto::Remote;
 use strict;
 use warnings;
 
-use Class::Load qw();
+use Encode;
+use Term::Prompt;
+
+use Class::Load;
+
+use List::Util qw(max);
+use Log::Dispatch::Screen;
+use Log::Dispatch::Screen::Color;
+
+use Pinto::Constants qw(:all);
+
 use App::Cmd::Setup -app;
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #-------------------------------------------------------------------------------
 
 sub global_opt_spec {
 
   return (
-      [ 'root|r=s'   => 'Root URL of your Pinto repository' ],
+      [ 'root|r=s'            => 'Root URL of your Pinto repository'         ],
+      [ 'username|user|u=s'   => 'Username to use for server authentication' ],
+      [ 'password|passwd|p=s' => 'Password to use for server authentication' ],
+      [ 'nocolor'             => 'Do not colorize diagnostic messages'       ],
+      [ 'quiet|q'             => 'Only report fatal errors'                  ],
+      [ 'verbose|v+'          => 'More diagnostic output (repeatable)'       ],
+
   );
 }
 
@@ -31,17 +47,75 @@ sub pinto {
         my %global_options = %{ $self->global_options() };
 
         $global_options{root} ||= $ENV{PINTO_REPOSITORY_ROOT}
-            || $self->usage_error('Must specify a repository root URL');
+                                  || $PINTO_SERVER_DEFAULT_ROOT;
+
+        $global_options{password} = $self->_prompt_for_password()
+            if defined $global_options{password} and $global_options{password} eq '-';
+
+
+        my $verbose = delete $global_options{verbose} || 0;
+        $global_options{log_level} = max(2 - $verbose, 0);
+        $global_options{log_level} = 4 if delete $global_options{quiet};
 
         my $pinto_class = $self->pinto_class();
         Class::Load::load_class($pinto_class);
-        my $pinto = $pinto_class->new(%global_options);
+
+        my $pinto = $pinto_class->new(%global_options, log_level=>'debug');
+        $pinto->add_logger($self->_make_logger(%global_options));
+
+        $pinto;
     };
+}
+
+
+#-------------------------------------------------------------------------------
+
+sub _make_logger {
+    my ($self, %options) = @_;
+
+    my $log_level = $options{log_level};
+    my $nocolor   = $options{nocolor};
+    my $colors    = $nocolor ? {} : ($self->_log_colors);
+    my $log_class = 'Log::Dispatch::Screen';
+    $log_class   .= '::Color' unless $nocolor;
+
+    return $log_class->new( min_level => $log_level,
+                            color     => $colors,
+                            stderr    => 1,
+                            newline   => 1 );
 }
 
 #-------------------------------------------------------------------------------
 
-sub pinto_class {  return 'Pinto::Remote' }
+sub _prompt_for_password {
+   my ($self) = @_;
+
+   my $input    = Term::Prompt::prompt('p', 'Password:', '', '');
+   my $password = Encode::decode_utf8($input);
+   print "\n"; # Get on a new line
+
+   return $password;
+}
+
+#------------------------------------------------------------------------------
+
+sub _log_colors {
+    my ($self) = @_;
+
+    # TODO: Create command line options for controlling colors and
+    # process them here.
+
+    return $self->_default_log_colors;
+}
+
+#------------------------------------------------------------------------------
+
+sub _default_log_colors { return $PINTO_DEFAULT_LOG_COLORS }
+
+#-------------------------------------------------------------------------------
+
+
+sub pinto_class { return 'Pinto::Remote' }
 
 #-------------------------------------------------------------------------------
 
@@ -59,7 +133,7 @@ App::Pinto::Remote - Command line driver for Pinto::Remote
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 METHODS
 
@@ -67,6 +141,11 @@ version 0.034
 
 Returns a reference to a L<Pinto::Remote> object that has been
 constructed for this application.
+
+=head2 pinto_class()
+
+Returns the name of the underlying Pinto engine that is being used for
+this application.
 
 =head1 AUTHOR
 

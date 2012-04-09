@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ App::Pinto::Remote::Command::remove - remove a distribution from the remote repo
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 SYNOPSIS
 
@@ -108,9 +108,11 @@ examples are equivalent:
 
 =item --author=NAME
 
-Sets your identity as a distribution author.  The C<NAME> can only be
-alphanumeric characters only (no spaces) and will be forced to
-uppercase.  The default is your username.
+Sets your identity as a distribution author.  The C<NAME> must be
+alphanumeric characters (no spaces) and will be forced to uppercase.
+Defaults to the C<user> specified in your C<~/.pause> configuration
+file (if such file exists).  Otherwise, defaults to your current login
+username.
 
 =item --message=MESSAGE
 

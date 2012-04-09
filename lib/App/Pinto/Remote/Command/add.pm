@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -57,8 +57,6 @@ sub execute {
     $self->pinto->new_batch( %{$opts} );
     $self->pinto->add_action('Add', %{$opts}, archive => $args->[0]);
     my $result = $self->pinto->run_actions();
-    print $result->to_string();
-
     return $result->is_success() ? 0 : 1;
 }
 
@@ -77,7 +75,7 @@ App::Pinto::Remote::Command::add - add a distribution to the remote repository
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 SYNOPSIS
 
@@ -103,9 +101,11 @@ file that you wish to add.  This file must exist and must be readable.
 
 =item --author=NAME
 
-Sets your identity as a distribution author.  The C<NAME> can only be
-alphanumeric characters only (no spaces) and will be forced to
-uppercase.  The default is your username.
+Sets your identity as a distribution author.  The C<NAME> must be
+alphanumeric characters (no spaces) and will be forced to uppercase.
+Defaults to the C<user> specified in your C<~/.pause> configuration
+file (if such file exists).  Otherwise, defaults to your current login
+username.
 
 =item --norecurse
 

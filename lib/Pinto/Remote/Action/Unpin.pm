@@ -1,16 +1,14 @@
-package Pinto::Remote::Action::Unpin;
-
 # ABSTRACT: Loosen a package that has been pinned
 
-use Moose;
+package Pinto::Remote::Action::Unpin;
 
-use MooseX::Types::Moose qw(Str);
+use Moose;
 
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -18,43 +16,8 @@ extends qw(Pinto::Remote::Action);
 
 #------------------------------------------------------------------------------
 
-has package  => (
-    is       => 'ro',
-    isa      => Str,
-    required => 1,
-);
-
-
-has message => (
-    is      => 'ro',
-    isa     => Str,
-);
-
-
-has tag => (
-    is      => 'ro',
-    isa     => Str,
-);
-
-#------------------------------------------------------------------------------
-
-override execute => sub {
-    my ($self) = @_;
-
-    my %ua_args = (
-
-        Content_Type => 'form-data',
-
-        Content => [
-
-            package   => $self->package(),
-            message   => $self->message(),
-            tag       => $self->tag(),
-        ],
-    );
-
-    return $self->post('unpin', %ua_args);
-};
+with qw( Pinto::Role::Interface::Action::Unpin
+         Pinto::Remote::Role::Interface::CommittableAction );
 
 #------------------------------------------------------------------------------
 
@@ -75,7 +38,7 @@ Pinto::Remote::Action::Unpin - Loosen a package that has been pinned
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 AUTHOR
 

@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -21,9 +21,11 @@ sub opt_spec {
     my ($self, $app) = @_;
 
     return (
-        [ 'distributions|d=s'  => 'Limit to matching distribution paths'],
+        [ 'distributions|D=s'  => 'Limit to matching distribution paths'],
         [ 'format=s'           => 'Format specification (see documentation)'],
-        [ 'packages|p=s'       => 'Limit to matching package names'],
+        [ 'packages|P=s'       => 'Limit to matching package names'],
+        [ 'pinned'             => 'Limit to pinned packages'],
+        [ 'index'              => 'Limit to packages in the index'],
     );
 }
 
@@ -42,18 +44,6 @@ sub validate_args {
 }
 
 #-------------------------------------------------------------------------------
-
-sub execute {
-    my ($self, $opts, $args) = @_;
-
-    $self->pinto->new_batch( %{$opts} );
-    $self->pinto->add_action('List', %{$opts});
-    my $result = $self->pinto->run_actions();
-
-    return $result->is_success() ? 0 : 1;
-}
-
-#-------------------------------------------------------------------------------
 1;
 
 
@@ -68,7 +58,7 @@ App::Pinto::Remote::Command::list - list the contents of the remote repository
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 SYNOPSIS
 

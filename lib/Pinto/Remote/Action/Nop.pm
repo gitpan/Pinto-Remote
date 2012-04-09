@@ -1,6 +1,6 @@
-package Pinto::Remote::Action::Nop;
-
 # ABSTRACT: Run a no-op on a remote repository
+
+package Pinto::Remote::Action::Nop;
 
 use Moose;
 
@@ -8,18 +8,15 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #------------------------------------------------------------------------------
 
-extends qw(Pinto::Remote::Action);
+extends qw( Pinto::Remote::Action );
 
 #------------------------------------------------------------------------------
 
-override execute => sub {
-    my ($self) = @_;
-    return $self->post('nop');
-};
+with qw( Pinto::Interface::Action::Nop );
 
 #------------------------------------------------------------------------------
 
@@ -40,7 +37,7 @@ Pinto::Remote::Action::Nop - Run a no-op on a remote repository
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 AUTHOR
 

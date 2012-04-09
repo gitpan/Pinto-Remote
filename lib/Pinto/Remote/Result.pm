@@ -4,46 +4,36 @@ package Pinto::Remote::Result;
 
 use Moose;
 
-use MooseX::Types::Moose qw(Bool ArrayRef);
+use MooseX::Types::Moose qw(Bool);
 
-use overload ('""' => 'to_string');
+#use overload ('""' => 'to_string');
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #------------------------------------------------------------------------------
 # Moose attributes
 
-has exceptions => (
+has is_success => (
     is         => 'ro',
-    isa        => ArrayRef,
-    traits     => [ 'Array' ],
-    default    => sub { [] },
-    handles    => {add_exception => 'push'},
-    init_arg   => undef,
-    auto_deref => 1,
+    isa        => Bool,
+    default    => 0,
 );
 
 #-----------------------------------------------------------------------------
-# TODO: Should we have an "ActionResult" to go with our "BatchResult" too?
+# TODO: Not sure if Pinto::Remote::Result needs to accumulate exception
+# messages the way Pinto::Result does.  I'm not happy with the whole *Result
+# thing anyway.
 
-sub is_success {
-    my ($self) = @_;
-
-    return @{ $self->exceptions } == 0;
-}
-
-#-----------------------------------------------------------------------------
-
-sub to_string {
-    my ($self) = @_;
-
-    my $string = join "\n", map { "$_" } $self->exceptions();
-    $string .= "\n" unless $string =~ m/\n $/x;
-
-    return $string;
-}
+#sub to_string {
+#    my ($self) = @_;
+#
+#    my $string = join "\n", map { "$_" } $self->exceptions();
+#    $string .= "\n" unless $string =~ m/\n $/x;
+#
+#    return 'EXCEPTIONS';
+#}
 
 #-----------------------------------------------------------------------------
 
@@ -64,7 +54,7 @@ Pinto::Remote::Result - The result from running a Batch of Actions
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 AUTHOR
 

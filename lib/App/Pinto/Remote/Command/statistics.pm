@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -40,18 +40,6 @@ sub validate_args {
 }
 
 #-------------------------------------------------------------------------------
-
-sub execute {
-    my ($self, $opts, $args) = @_;
-
-    $self->pinto->new_batch( %{$opts} );
-    $self->pinto->add_action('Statistics', %{$opts});
-    my $result = $self->pinto->run_actions();
-
-    return $result->is_success() ? 0 : 1;
-}
-
-#-------------------------------------------------------------------------------
 1;
 
 
@@ -66,7 +54,7 @@ App::Pinto::Remote::Command::statistics - report statistics about the remote rep
 
 =head1 VERSION
 
-version 0.034
+version 0.037
 
 =head1 SYNOPSIS
 

@@ -8,7 +8,7 @@ use Pinto::Remote::Result;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.034'; # VERSION
+our $VERSION = '0.037'; # VERSION
 
 #------------------------------------------------------------------------------
 # Moose attributes
@@ -31,16 +31,12 @@ has _actions => (
 
 #------------------------------------------------------------------------------
 
+
 sub run {
     my ($self) = @_;
 
-    my $result = Pinto::Remote::Result->new();
-
-    while ( my $action = $self->dequeue() ) {
-        my $response = $action->execute();
-        $result->add_exception( $response->content() )
-          if not $response->is_success();
-    }
+    my $action = $self->dequeue();
+    my $result = $action->execute();
 
     return $result;
 }
@@ -64,7 +60,13 @@ Pinto::Remote::Batch - Runs a series of remote actions
 
 =head1 VERSION
 
-version 0.034
+version 0.037
+
+=head1 METHODS
+
+=head2 run()
+
+Runs all the Actions in this Batch.  Returns a L<Pinto::Remote::Result>.
 
 =head1 AUTHOR
 
