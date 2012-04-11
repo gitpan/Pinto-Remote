@@ -2,7 +2,7 @@ NAME
     Pinto::Remote - Interact with a remote Pinto repository
 
 VERSION
-    version 0.037
+    version 0.038
 
 METHODS
   new_batch( %batch_args )

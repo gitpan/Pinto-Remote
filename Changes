@@ -1,3 +1,18 @@
+0.038     2012-04-10 21:02:56 America/Los_Angeles
+
+    Bug Fixes:
+
+    Fixed bug in the "verify" command that caused a "method not found"
+    error.
+
+    Corrected the package names that we depend on.  These got moved
+    around in the Pinto-Common distribution and I failed to update the
+    correct names here.  Thanks CPAN Testers for helping me see this!
+
+    Also corrected some erroneous documentation in several of the
+    commands that were brought over from App::Pinto::Admin in the last
+    release.
+
 0.037     2012-04-09 14:08:28 America/Los_Angeles
 
     New Features:

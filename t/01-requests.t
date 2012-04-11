@@ -46,13 +46,13 @@ $mock_ua->map( sub{ return 1 }, sub { $req = shift; HTTP::Response->new(200) } )
 
   my %params = (message => 'M', tag => 'T');
   my $pinto = Pinto::Remote->new(root => 'myhost', ua => $mock_ua);
-  $pinto->new_batch->add_action('Purge', %params);
+  $pinto->new_batch->add_action('Clean', %params);
   $pinto->run_actions;
 
   is $req->method,  'POST',
       'Correct HTTP method in request';
 
-  is $req->uri,     'http://myhost:3111/action/purge',
+  is $req->uri,     'http://myhost:3111/action/clean',
       'Correct uri in request';
 
   is_deeply parse_req_params($req), \%params,

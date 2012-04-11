@@ -11,7 +11,7 @@ use base 'App::Pinto::Remote::Command';
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.037'; # VERSION
+our $VERSION = '0.038'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -19,7 +19,6 @@ sub opt_spec {
     my ($self, $app) = @_;
 
     return (
-        [ 'confirm'     => 'Ask for confirmation before removing each distribution' ],
         [ 'message|m=s' => 'Prepend a message to the VCS log' ],
         [ 'nocommit'    => 'Do not commit changes to VCS' ],
         [ 'noinit'      => 'Do not pull/update from VCS' ],
@@ -52,7 +51,7 @@ App::Pinto::Remote::Command::clean - remove all distributions that are not in th
 
 =head1 VERSION
 
-version 0.037
+version 0.038
 
 =head1 SYNOPSIS
 
@@ -75,12 +74,6 @@ None.
 =head1 COMMAND OPTIONS
 
 =over 4
-
-=item --confirm
-
-Causes L<Pinto> to prompt for confirmation before deleting each
-distribution.  This option only has effect if the terminal is
-interactive.
 
 =item --message=MESSAGE
 

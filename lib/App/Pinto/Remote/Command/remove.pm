@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.037'; # VERSION
+our $VERSION = '0.038'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -55,7 +55,6 @@ sub execute {
     $self->pinto->new_batch( %{$opts} );
     $self->pinto->add_action('Remove', %{$opts}, path => $args->[0]);
     my $result = $self->pinto->run_actions();
-    print $result->to_string();
 
     return $result->is_success() ? 0 : 1;
 }
@@ -75,7 +74,7 @@ App::Pinto::Remote::Command::remove - remove a distribution from the remote repo
 
 =head1 VERSION
 
-version 0.037
+version 0.038
 
 =head1 SYNOPSIS
 

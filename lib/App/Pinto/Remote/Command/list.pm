@@ -9,7 +9,7 @@ use base qw(App::Pinto::Remote::Command);
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.037'; # VERSION
+our $VERSION = '0.038'; # VERSION
 
 #-------------------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ App::Pinto::Remote::Command::list - list the contents of the remote repository
 
 =head1 VERSION
 
-version 0.037
+version 0.038
 
 =head1 SYNOPSIS
 
@@ -80,7 +80,7 @@ None.
 
 =over 4
 
-=item -d=PATTERN
+=item -D=PATTERN
 
 =item --distributions=PATTERN
 
@@ -126,7 +126,13 @@ the default format looks like.
 
   %x%m%s %-38n %v %p\n
 
-=item -p=PATTERN
+=item --index
+
+Limits the listing to records for packages that are in currently in
+the index.  In other words, packages that L<Pinto> thinks are the
+"latest".
+
+=item -P=PATTERN
 
 =item --packages=PATTERN
 
@@ -134,6 +140,10 @@ Limits the listing to records where the package name matches
 "PATTERN".  Note that "PATTERN" is just a plain string, not a regular
 expression.  The "PATTERN" will match if it appears anywhere in the
 package name.
+
+=item --pinned
+
+Limits the listing to records where the package has been pinned.
 
 =back
 

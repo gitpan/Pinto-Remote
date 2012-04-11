@@ -4,13 +4,11 @@ package Pinto::Remote::Action::Verify;
 
 use Moose;
 
-use Pinto::Util;
-
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.037'; # VERSION
+our $VERSION = '0.038'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -18,7 +16,7 @@ extends qw( Pinto::Remote::Action );
 
 #------------------------------------------------------------------------------
 
-with qw( Pinto::Interface::Action::Verify );
+with qw( Pinto::Role::Interface::Action::Verify );
 
 #------------------------------------------------------------------------------
 
@@ -40,7 +38,7 @@ Pinto::Remote::Action::Verify - Verify all distributions are present in the repo
 
 =head1 VERSION
 
-version 0.037
+version 0.038
 
 =head1 AUTHOR
 

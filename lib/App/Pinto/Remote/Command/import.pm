@@ -5,15 +5,13 @@ package App::Pinto::Remote::Command::import;
 use strict;
 use warnings;
 
-use Pinto::Util;
-
 #------------------------------------------------------------------------------
 
 use base 'App::Pinto::Remote::Command';
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.037'; # VERSION
+our $VERSION = '0.038'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -41,8 +39,8 @@ sub usage_desc {
     my ($command) = $self->command_names();
 
     my $usage =  <<"END_USAGE";
-%c --root=PATH $command [OPTIONS] PACKAGE_NAME ...
-%c --root=PATH $command [OPTIONS] < LIST_OF_PACKAGE_NAMES
+%c --root=PATH $command [OPTIONS] PACKAGE_NAME
+%c --root=PATH $command [OPTIONS] PACKAGE_NAME-PACKAGE_VERSION
 END_USAGE
 
     chomp $usage;
@@ -51,21 +49,26 @@ END_USAGE
 
 #------------------------------------------------------------------------------
 
+sub validate_args {
+    my ($self, $opts, $args) = @_;
+
+    $self->usage_error("Must specify exactly one package") if @{ $args } != 1;
+
+    return 1;
+}
+
+#------------------------------------------------------------------------------
+
 sub execute {
     my ($self, $opts, $args) = @_;
 
-    my @args = @{$args} ? @{$args} : Pinto::Util::args_from_fh(\*STDIN);
-    return 0 if not @args;
-
     $self->pinto->new_batch(%{$opts});
 
-    for my $arg (@args) {
-        my ($name, $version) = split m/ - /mx, $arg, 2;
-        $self->pinto->add_action('Import', %{$opts}, package => $name,
-                                                     version => ($version || 0));
-    }
-    my $result = $self->pinto->run_actions();
+    my ($name, $version) = split m/ - /mx, $args->[0], 2;
+    $self->pinto->add_action('Import', %{$opts}, package => $name,
+                                                 version => ($version || 0));
 
+    my $result = $self->pinto->run_actions();
     return $result->is_success() ? 0 : 1;
 }
 
@@ -85,12 +88,12 @@ App::Pinto::Remote::Command::import - get selected distributions from a remote r
 
 =head1 VERSION
 
-version 0.037
+version 0.038
 
 =head1 SYNOPSIS
 
-  pinto-remote --root=URL import [OPTIONS] PACKAGE_NAME ...
-  pinto-remote --root=URL import [OPTIONS] < LIST_OF_PACKAGE_NAMES
+  pinto-remote --root=URL import [OPTIONS] PACKAGE_NAME
+  pinto-remote --root=URL import [OPTIONS] PACKAGE_NAME-PACKAGE_VERSION
 
 =head1 DESCRIPTION
 
@@ -126,10 +129,6 @@ To specify a minimum version for that package, append '-' and the
 minimum version number to the name.  For example:
 
   Foo::Bar-1.2
-
-You can also pipe arguments to this command over STDIN.  In that case,
-blank lines and lines that look like comments (i.e. starting with "#"
-or ';') will be ignored.
 
 In the future, you may be able to specify distribution paths or
 specific URLs for import as well.
