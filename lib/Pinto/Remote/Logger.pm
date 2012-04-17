@@ -12,7 +12,7 @@ use namespace::autoclean;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.038'; # VERSION
+our $VERSION = '0.039'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -99,7 +99,7 @@ Pinto::Remote::Logger - Record events in the repository log file (and elsewhere)
 
 =head1 VERSION
 
-version 0.038
+version 0.039
 
 =head1 METHODS
 

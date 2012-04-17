@@ -11,7 +11,7 @@ use base 'App::Pinto::Remote::Command';
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.038'; # VERSION
+our $VERSION = '0.039'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -39,8 +39,7 @@ sub usage_desc {
     my ($command) = $self->command_names();
 
     my $usage =  <<"END_USAGE";
-%c --root=PATH $command [OPTIONS] PACKAGE_NAME
-%c --root=PATH $command [OPTIONS] PACKAGE_NAME-PACKAGE_VERSION
+%c --root=PATH $command [OPTIONS] TARGET
 END_USAGE
 
     chomp $usage;
@@ -52,7 +51,7 @@ END_USAGE
 sub validate_args {
     my ($self, $opts, $args) = @_;
 
-    $self->usage_error("Must specify exactly one package") if @{ $args } != 1;
+    $self->usage_error("Must specify exactly one target") if @{ $args } != 1;
 
     return 1;
 }
@@ -63,11 +62,7 @@ sub execute {
     my ($self, $opts, $args) = @_;
 
     $self->pinto->new_batch(%{$opts});
-
-    my ($name, $version) = split m/ - /mx, $args->[0], 2;
-    $self->pinto->add_action('Import', %{$opts}, package => $name,
-                                                 version => ($version || 0));
-
+    $self->pinto->add_action('Import', %{$opts}, target => $args->[0]);
     my $result = $self->pinto->run_actions();
     return $result->is_success() ? 0 : 1;
 }
@@ -88,50 +83,45 @@ App::Pinto::Remote::Command::import - get selected distributions from a remote r
 
 =head1 VERSION
 
-version 0.038
+version 0.039
 
 =head1 SYNOPSIS
 
-  pinto-remote --root=URL import [OPTIONS] PACKAGE_NAME
-  pinto-remote --root=URL import [OPTIONS] PACKAGE_NAME-PACKAGE_VERSION
+  pinto-remote --root=URL import [OPTIONS] TARGET
 
 =head1 DESCRIPTION
 
-This command locates a package in one of the source repositories and
-then imports the distribution providing that package into your
-repository.  Then it recursively locates and imports all the
-distributions that provide the packages to satisfy the prerequisites
-for that distribution.
+This command locates a package in your upstream repositories and then
+imports the distribution providing that package into your repository.
+Then it recursively locates and imports all the distributions that are
+necessary to satisfy its prerequisites.  You can also request to
+directly import a particular distribution.
 
 When locating packages, Pinto first looks at the the packages that
 already exist in the local repository, then Pinto looks at the
-packages that are available available on the remote repositories.  At
-present, Pinto takes the *first* package it can find that satisfies
+packages that are available available on the upstream repositories.
+At present, Pinto takes the *first* package it can find that satisfies
 the prerequisite.  In the future, you may be able to direct Pinto to
 instead choose the *latest* package that satisfies the prerequisite.
 (NOT SURE THOSE LAST TWO STATEMENTS ARE TRUE).
 
 Imported distributions will be assigned to their original author
-(compare this to the C<add> command which makes B<you> the author of
-the distribution).  Also, packages provided by imported distributions
-are still considered foreign, so locally added packages will always
+(compare this to the "add" command which makes you the author of the
+distribution).  Also, packages provided by imported distributions are
+still considered foreign, so locally added packages will always
 override ones that you imported, even if the imported package has a
 higher version.
 
 =head1 COMMAND ARGUMENTS
 
-To import a distribution that provides a particular package, just give
-the name of the package.  For example:
+The argument is the target that you want to import.  A target can be
+specified as a package name (with or without a minimum version number)
+or as a particular distribution.  For example:
 
-  Foo::Bar
-
-To specify a minimum version for that package, append '-' and the
-minimum version number to the name.  For example:
-
-  Foo::Bar-1.2
-
-In the future, you may be able to specify distribution paths or
-specific URLs for import as well.
+  Foo::Bar                                 # Imports any version of Foo::Bar
+  Foo::Bar−1.2                             # Imports Foo::Bar 1.2 or higher
+  SHAKESPEARE/King−Lear−1.2.tar.gz         # Imports a specific distribuion
+  SHAKESPEARE/tragedies/Hamlet−4.2.tar.gz  # Ditto, but from a subdirectory
 
 =head1 COMMAND OPTIONS
 

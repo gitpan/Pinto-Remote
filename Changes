@@ -1,3 +1,16 @@
+0.039     2012-04-16 18:05:24 America/Los_Angeles
+
+     New Features:
+
+     The "import" command will now import a particular distribution
+     if you specify it using the right notation.  See POD for details
+     (Steven Leung).
+
+     Required Upgrades:
+
+     You now need to have Pinto-0.038 or newer installed on the server
+     side.
+
 0.038     2012-04-10 21:02:56 America/Los_Angeles
 
     Bug Fixes:

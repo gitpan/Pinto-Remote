@@ -10,7 +10,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.038'; # VERSION
+our $VERSION = '0.039'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ Pinto::Remote::Role::Interface::CommittableAction - Interface for Actions that m
 
 =head1 VERSION
 
-version 0.038
+version 0.039
 
 =head1 AUTHOR
 

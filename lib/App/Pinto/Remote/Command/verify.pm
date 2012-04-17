@@ -11,7 +11,7 @@ use base 'App::Pinto::Remote::Command';
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.038'; # VERSION
+our $VERSION = '0.039'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ App::Pinto::Remote::Command::verify - report distributions that are missing
 
 =head1 VERSION
 
-version 0.038
+version 0.039
 
 =head1 SYNOPSIS
 

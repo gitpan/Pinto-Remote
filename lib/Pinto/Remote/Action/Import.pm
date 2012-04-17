@@ -8,7 +8,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.038'; # VERSION
+our $VERSION = '0.039'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ Pinto::Remote::Action::Import - Import a package (and its prerequisites) into th
 
 =head1 VERSION
 
-version 0.038
+version 0.039
 
 =head1 AUTHOR
 
