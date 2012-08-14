@@ -2,29 +2,34 @@ NAME
     Pinto::Remote - Interact with a remote Pinto repository
 
 VERSION
-    version 0.039
+    version 0.046
+
+SYNOPSIS
+    See pinto to create and manage a Pinto repository.
+
+    See pintod to allow remote access to your Pinto repository.
+
+    See Pinto::Manual for more information about the Pinto tools.
+
+DESCRIPTION
+    Pinto::Remote is the cousin of Pinto. It provides the same API, but
+    instead of running Actions against a local repository, it just sends the
+    Action parameters to a pintod server that invokes Pinto on the remote
+    host.
+
+    If you are using the pinto application, it will automatically load
+    either Pinto or Pinto::Remote depending on whether your repository root
+    looks like a local directory path or a remote URL.
 
 METHODS
-  new_batch( %batch_args )
-    Prepares this Pinto::Remote to run a new batch of Actions. Any prior
-    batch will be discarded.
-
-  add_action( $action_name, %action_args )
-    Constructs the action with the given names and arguments, and adds it to
-    the current batch. You must first call "new_batch" before you can add
-    any actions. The precise class of the Action will be formed by
-    prepending 'Pinto::Remote::Action::' to the action name. See the
-    documentation for the corresponding Action class for a details about the
-    arguments it supports.
-
-  run_actions()
-    Executes all the actions that are currently in the batch for this
-    Pinto::Remote. Returns a Pinto::Remote::Result object that indicates
-    whether the batch was successful and contains any warning or error
-    messages that might have occurred along the way.
+  run( $action_name => %action_args )
+    Loads the Action subclass for the given $action_name and constructs an
+    object using the given $action_args. If the subclass
+    "Pinto::Remote::Action::$action_name" does not exist, then it falls back
+    to the Pinto::Remote::Action base class.
 
   add_logger( $obj )
-    Convenience method for installing additional endpoints for logging. The
+    Convenience method for installing additional logging endpoints. The
     object must be an instance of a Log::Dispatch::Output subclass.
 
 SUPPORT

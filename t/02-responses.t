@@ -37,9 +37,9 @@ $mock_ua->map( sub{ return 1 }, sub { return $res } );
   my $buffer = '';
   my $out    = IO::String->new(\$buffer);
   my $pinto  = Pinto::Remote->new(root => 'localhost');
-  my $result = $pinto->new_batch->add_action('List', out => $out)->run_actions;
+  my $result = $pinto->run('List');
 
-  is $result->is_success, 1,
+  is $result->was_successful, 1,
       'Got successful result' or diag $buffer;
 
   is $buffer, "DATA-GOES-HERE\n",

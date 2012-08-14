@@ -1,6 +1,6 @@
-package Pinto::Remote::Config;
-
 # ABSTRACT: Internal configuration for Pinto::Remote
+
+package Pinto::Remote::Config;
 
 use Moose;
 use MooseX::Types::Moose qw(Maybe Str);
@@ -14,7 +14,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.039'; # VERSION
+our $VERSION = '0.046'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -36,6 +36,13 @@ has username => (
 has password => (
     is      => 'ro',
     isa     => Maybe[Str],
+);
+
+
+has log_level => (
+    is      => 'ro',
+    isa     => Str,
+    default => 'warning',
 );
 
 #------------------------------------------------------------------------------
@@ -77,7 +84,7 @@ Pinto::Remote::Config - Internal configuration for Pinto::Remote
 
 =head1 VERSION
 
-version 0.039
+version 0.046
 
 =head1 AUTHOR
 

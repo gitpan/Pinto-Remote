@@ -1,26 +1,39 @@
-package Pinto::Remote;
-
 # ABSTRACT:  Interact with a remote Pinto repository
+
+package Pinto::Remote;
 
 use Moose;
 use MooseX::Types::Moose qw(Str);
 
-use Carp;
-use Class::Load;
 use LWP::UserAgent;
 
 use Pinto::Remote::Config;
 use Pinto::Remote::Logger;
-use Pinto::Remote::Batch;
+use Pinto::Remote::Action;
 
 use namespace::autoclean;
 
 #-------------------------------------------------------------------------------
 
-our $VERSION = '0.039'; # VERSION
+our $VERSION = '0.046'; # VERSION
 
 #------------------------------------------------------------------------------
-# Moose attributes
+
+has ua    => (
+    is        => 'ro',
+    isa       => 'LWP::UserAgent',
+    default   => sub { LWP::UserAgent->new( agent => $_[0]->ua_name) },
+    lazy      => 1,
+);
+
+
+has ua_name => (
+    is      => 'ro',
+    isa     => Str,
+    default => sub { sprintf '%s/%s', ref $_[0], $_[0]->VERSION || '??' },
+    lazy    => 1,
+);
+
 
 has config    => (
     is        => 'ro',
@@ -33,32 +46,10 @@ has config    => (
 has logger    => (
     is        => 'ro',
     isa       => 'Pinto::Remote::Logger',
-    handles   => [ qw(debug note info whine fatal) ],
+    handles   => [ qw(debug info notice warning fatal) ],
     required  => 1,
 );
 
-
-has ua        => (
-    is        => 'ro',
-    isa       => 'LWP::UserAgent',
-    default   => sub { LWP::UserAgent->new(timeout => 600) },
-);
-
-
-has _batch => (
-    is         => 'ro',
-    isa        => 'Pinto::Remote::Batch',
-    writer     => '_set_batch',
-    init_arg   => undef,
-);
-
-
-has _action_base_class => (
-    is         => 'ro',
-    isa        => Str,
-    default    => 'Pinto::Remote::Action',
-    init_arg   => undef,
-);
 
 #------------------------------------------------------------------------------
 
@@ -74,50 +65,24 @@ sub BUILDARGS {
 #------------------------------------------------------------------------------
 
 
-sub new_batch {
-    my ($self, %args) = @_;
+sub run {
+    my ($self, $action_name, @args) = @_;
 
-    my $batch = Pinto::Remote::Batch->new( config => $self->config(),
-                                           logger => $self->logger(),
-                                           %args );
-    $self->_set_batch( $batch );
+    my $action_baseclass = __PACKAGE__ . '::Action';
+    my $action_subclass  = __PACKAGE__ . '::Action::' . $action_name;
 
-    return $self;
-}
+    my $subclass_did_load = Class::Load::try_load_class($action_subclass);
+    my $action_class = $subclass_did_load ? $action_subclass : $action_baseclass;
 
-#------------------------------------------------------------------------------
+    my $action_args = (@args == 1 and ref $args[0] eq 'HASH') ? $args[0] : {@args};
 
+    my $action = $action_class->new( name   => $action_name,
+                                     args   => $action_args,
+                                     config => $self->config,
+                                     logger => $self->logger,
+                                     ua     => $self->ua );
 
-sub add_action {
-    my ($self, $action_name, %args) = @_;
-
-    my $batch = $self->_batch()
-        or confess 'You must create a batch first';
-
-    my $action_class = $self->_action_base_class . "::$action_name";
-    Class::Load::load_class($action_class);
-
-    my $action = $action_class->new( config => $self->config(),
-                                     logger => $self->logger(),
-                                     %args );
-
-    $batch->enqueue($action);
-
-    return $self;
-}
-
-#------------------------------------------------------------------------------
-
-
-sub run_actions {
-    my ($self) = @_;
-
-    $self->_batch()
-        or confess 'You must create a batch first';
-
-    my $result = $self->_batch->run();
-
-    return $result;
+    return $action->execute;
 }
 
 #------------------------------------------------------------------------------
@@ -133,7 +98,7 @@ sub add_logger {
 
 #------------------------------------------------------------------------------
 
-__PACKAGE__->meta->make_immutable();
+__PACKAGE__->meta->make_immutable;
 
 #-------------------------------------------------------------------------------
 
@@ -153,34 +118,39 @@ Pinto::Remote - Interact with a remote Pinto repository
 
 =head1 VERSION
 
-version 0.039
+version 0.046
+
+=head1 SYNOPSIS
+
+See L<pinto> to create and manage a Pinto repository.
+
+See L<pintod> to allow remote access to your Pinto repository.
+
+See L<Pinto::Manual> for more information about the Pinto tools.
+
+=head1 DESCRIPTION
+
+Pinto::Remote is the cousin of L<Pinto>.  It provides the same API,
+but instead of running Actions against a local repository, it just
+sends the Action parameters to a L<pintod> server that invokes Pinto
+on the remote host.
+
+If you are using the L<pinto> application, it will automatically load
+either Pinto or Pinto::Remote depending on whether your repository
+root looks like a local directory path or a remote URL.
 
 =head1 METHODS
 
-=head2 new_batch( %batch_args )
+=head2 run( $action_name => %action_args )
 
-Prepares this Pinto::Remote to run a new batch of Actions.  Any prior
-batch will be discarded.
-
-=head2 add_action( $action_name, %action_args )
-
-Constructs the action with the given names and arguments, and adds it
-to the current batch.  You must first call C<new_batch> before you can
-add any actions.  The precise class of the Action will be formed by
-prepending 'Pinto::Remote::Action::' to the action name.  See the
-documentation for the corresponding Action class for a details about
-the arguments it supports.
-
-=head2 run_actions()
-
-Executes all the actions that are currently in the batch for this
-Pinto::Remote.  Returns a L<Pinto::Remote::Result> object that
-indicates whether the batch was successful and contains any warning or
-error messages that might have occurred along the way.
+Loads the Action subclass for the given C<$action_name> and constructs
+an object using the given C<$action_args>.  If the subclass
+C<Pinto::Remote::Action::$action_name> does not exist, then it falls
+back to the L<Pinto::Remote::Action> base class.
 
 =head2 add_logger( $obj )
 
-Convenience method for installing additional endpoints for logging.
+Convenience method for installing additional logging endpoints.
 The object must be an instance of a L<Log::Dispatch::Output> subclass.
 
 =head1 SUPPORT
@@ -266,3 +236,4 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
+

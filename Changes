@@ -1,3 +1,21 @@
+0.046     2012-08-13 17:24:54 America/Los_Angeles
+
+     Major Changes:
+
+     * App::Pinto::Remote and pinto-remote(1) no longer exist.  They
+     have been replaced by the unified App::Pinto library and pinto(1)
+     command which can perform (almost) any operation locally or
+     remotely.
+
+     Bug Fixes:
+
+     * Outgoing requests now have a sensible name for the user agent.
+
+     Required Upgrades:
+
+     * You now need to have Pinto::Server-0.046 or newer installed on
+     the server side.
+
 0.039     2012-04-16 18:05:24 America/Los_Angeles
 
      New Features:

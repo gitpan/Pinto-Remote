@@ -1,43 +1,34 @@
-package Pinto::Remote::Result;
+# ABSTRACT: The result from running a remote Action
 
-# ABSTRACT: The result from running a Batch of Actions
+package Pinto::Remote::Result;
 
 use Moose;
 
 use MooseX::Types::Moose qw(Bool);
 
-#use overload ('""' => 'to_string');
-
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.039'; # VERSION
+our $VERSION = '0.046'; # VERSION
 
 #------------------------------------------------------------------------------
-# Moose attributes
 
-has is_success => (
+has was_successful => (
     is         => 'ro',
     isa        => Bool,
     default    => 0,
 );
 
 #-----------------------------------------------------------------------------
-# TODO: Not sure if Pinto::Remote::Result needs to accumulate exception
-# messages the way Pinto::Result does.  I'm not happy with the whole *Result
-# thing anyway.
 
-#sub to_string {
-#    my ($self) = @_;
-#
-#    my $string = join "\n", map { "$_" } $self->exceptions();
-#    $string .= "\n" unless $string =~ m/\n $/x;
-#
-#    return 'EXCEPTIONS';
-#}
+
+sub exit_status {
+    my ($self) = @_;
+    return $self->was_successful ? 0 : 1;
+}
 
 #-----------------------------------------------------------------------------
 
-__PACKAGE__->meta->make_immutable();
+__PACKAGE__->meta->make_immutable;
 
 #-----------------------------------------------------------------------------
 1;
@@ -50,11 +41,17 @@ __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
 
-Pinto::Remote::Result - The result from running a Batch of Actions
+Pinto::Remote::Result - The result from running a remote Action
 
 =head1 VERSION
 
-version 0.039
+version 0.046
+
+=head1 METHODS
+
+=head2 exit_status()
+
+Returns 0 if this result was successful.  Otherwise, returns 1.
 
 =head1 AUTHOR
 

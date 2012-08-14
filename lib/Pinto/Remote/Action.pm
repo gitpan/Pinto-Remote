@@ -1,30 +1,46 @@
-package Pinto::Remote::Action;
-
 # ABSTRACT: Base class for remote Actions
 
+package Pinto::Remote::Action;
+
 use Moose;
+use MooseX::Types::Moose qw(Str);
+use Pinto::Types qw(Io);
 
 use Carp;
 use URI;
-use LWP::UserAgent;
+use JSON;
 use HTTP::Request::Common;
 
 use Pinto::Remote::Result;
+use Pinto::Exception qw(throw);
 use Pinto::Constants qw(:all);
-use Pinto::Types qw(IO);
 
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.039'; # VERSION
+our $VERSION = '0.046'; # VERSION
 
 #------------------------------------------------------------------------------
 
-has config    => (
+has name      => (
     is        => 'ro',
-    isa       => 'Pinto::Remote::Config',
+    isa       => Str,
     required  => 1,
+);
+
+
+has args    => (
+    is      => 'ro',
+    isa     => 'HashRef',
+    default => sub { {} },
+);
+
+
+has config   => (
+    is       => 'ro',
+    isa      => 'Pinto::Remote::Config',
+    required => 1,
 );
 
 
@@ -39,7 +55,7 @@ has logger    => (
 has ua        => (
     is        => 'ro',
     isa       => 'LWP::UserAgent',
-    default   => sub { LWP::UserAgent->new(timeout => 600) },
+    required  => 1,
 );
 
 #------------------------------------------------------------------------------
@@ -48,53 +64,93 @@ has ua        => (
 sub execute {
     my ($self) = @_;
 
-    my $class = ref $self;
-    $class =~ m{ ([^:]+) $}mx or confess "Could not parse action name from $class";
-    my $action_name = lc $1;
+    my $request = $self->_make_request;
+    my $result  = $self->_send_request(req => $request);
 
-    my $form_data  = $self->can('as_post_data') ? $self->as_post_data : [];
+    return $result;
+}
 
-    my $url = URI->new( $self->config->root() );
-    $url->path_segments('', 'action', $action_name);
+#------------------------------------------------------------------------------
+
+sub _make_request {
+    my ($self, %args) = @_;
+
+    my $action_name = $args{name}      || $self->name;
+    my $post_data   = $args{post_data} || $self->_as_post_data;
+
+    my $url = URI->new( $self->config->root );
+    $url->path_segments('', 'action', lc $action_name);
 
     my $request = POST( $url, Content_Type => 'form-data',
-                              Content      => $form_data );
+                              Content      => $post_data );
 
-    if ( $self->config->password() ) {
-        $request->authorization_basic( $self->config->username(),
-                                       $self->config->password() );
+    if ( $self->config->password ) {
+        $request->authorization_basic( $self->config->username,
+                                       $self->config->password );
     }
 
+    return $request;
+}
 
-    return $self->_send_request($request);
+
+#------------------------------------------------------------------------------
+
+sub _pinto_args {
+    my ($self) = @_;
+
+    my $pinto_args = { log_level => $self->config->log_level,
+                       username  => $self->config->username };
+
+    return ( pinto_args => encode_json($pinto_args) );
+}
+
+#------------------------------------------------------------------------------
+
+sub _action_args {
+    my ($self) = @_;
+
+    return ( action_args => encode_json($self->args) );
+}
+
+#------------------------------------------------------------------------------
+
+sub _as_post_data {
+    my ($self) = @_;
+
+    return [ $self->_pinto_args, $self->_action_args ];
 }
 
 #------------------------------------------------------------------------------
 
 sub _send_request {
-    my ($self, $request) = @_;
+    my ($self, %args) = @_;
+
+    my $request = $args{req} || $self->make_request;
+    my $out     = $args{out} || \*STDOUT;
 
     my $status   = 0;
     my $buffer   = '';
-    my $callback = sub { $self->_response_data_handler(@_, \$status, \$buffer) };
+
+    # Currying in some extra args to the callback...
+    my $callback = sub { $self->_response_callback(@_, \$status, \$buffer, $out) };
     my $response = $self->ua->request($request, $callback, 128);
 
     if (not $response->is_success()) {
         $self->logger->error($response->content);
-        return Pinto::Remote::Result->new(is_success => 0);
+        return Pinto::Remote::Result->new(was_successful => 0);
     }
 
-    return Pinto::Remote::Result->new(is_success => $status);
+    return Pinto::Remote::Result->new(was_successful => $status);
 }
 
 #------------------------------------------------------------------------------
 
-sub _response_data_handler {                  ## no critic qw(ProhibitManyArgs)
-    my ($self, $data, $request, $proto, $status, $buffer) = @_;
+sub _response_callback {                  ## no critic qw(ProhibitManyArgs)
+    my ($self, $data, $request, $proto, $status, $buffer, $out) = @_;
 
     ${ $buffer } .= $data;
     # Look mom! Homemade line buffering...
-    my $line = ${ $buffer } =~ s{^ (.*\n) }{}sx ? $1 : '';
+    my $line = ( ${$buffer} =~ s{^ (.*\n) }{}sx ) ? $1 : ''; ## no critic qw(CaptureWithoutTest)
 
     for (split m{\n}x, $line) {
 
@@ -113,22 +169,15 @@ sub _response_data_handler {                  ## no critic qw(ProhibitManyArgs)
             next;
         }
 
-        # Send everything else to the output handle
-        if ($self->can('out')) {
-            print {$self->out} "$_\n";
-            next;
-        }
-
-        # If we get here, then something is fishy
-        $self->error("Unexpected response: $_");
+        print $out "$_\n";
     }
 
     return 1;
 }
 
-#------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
 
-__PACKAGE__->meta->make_immutable();
+__PACKAGE__->meta->make_immutable;
 
 #------------------------------------------------------------------------------
 1;
@@ -145,11 +194,11 @@ Pinto::Remote::Action - Base class for remote Actions
 
 =head1 VERSION
 
-version 0.039
+version 0.046
 
 =head1 METHODS
 
-=head2 execute()
+=head2 execute
 
 Runs this Action on the remote server by serializing itself and
 sending a POST request to the server.  Returns a

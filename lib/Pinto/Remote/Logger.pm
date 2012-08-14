@@ -12,7 +12,7 @@ use namespace::autoclean;
 
 #-----------------------------------------------------------------------------
 
-our $VERSION = '0.039'; # VERSION
+our $VERSION = '0.046'; # VERSION
 
 #-----------------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ has log_handler => (
 sub _build_log_handler {
     my ($self) = @_;
 
-    my $handler = Log::Dispatch->new();
+    my $handler = Log::Dispatch->new;
 
     return $handler;
 }
@@ -59,7 +59,7 @@ sub log_server_message {
     my $levels_rx = qr{DEBUG|NOTICE|INFO|WARNING|ERROR|CRITICAL|EMERGENCY}ix;
 
 
-    if ( $message =~ s{^ \Q$prefix\E ($levels_rx): \s+}{$prefix}x ) {
+    if ( $message =~ s{^ \Q$prefix\E ($levels_rx): \s+}{}x ) {
         return $self->log_handler->log(level => lc $1, message => $message);
     }
 
@@ -99,7 +99,7 @@ Pinto::Remote::Logger - Record events in the repository log file (and elsewhere)
 
 =head1 VERSION
 
-version 0.039
+version 0.046
 
 =head1 METHODS
 

@@ -4,11 +4,14 @@ package Pinto::Remote::Action::Add;
 
 use Moose;
 
+use JSON;
+use Pinto::Exception qw(throw);
+
 use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.039'; # VERSION
+our $VERSION = '0.046'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -16,12 +19,30 @@ extends qw( Pinto::Remote::Action );
 
 #------------------------------------------------------------------------------
 
-with qw( Pinto::Role::Interface::Action::Add
-         Pinto::Remote::Role::Interface::CommittableAction );
+sub BUILD {
+    my ($self) = @_;
+
+    throw 'Only one archive can be remotely added at a time'
+      if @{ $self->args->{archives} || [] } > 1;
+
+    return $self;
+}
 
 #------------------------------------------------------------------------------
 
-__PACKAGE__->meta->make_immutable();
+override _as_post_data => sub {
+    my ($self) = @_;
+
+    my $form_data = super;
+    my $archive = (delete $self->args->{archives})->[0];
+    push @{ $form_data }, (archives => [$archive]);
+
+    return $form_data;
+};
+
+#------------------------------------------------------------------------------
+
+__PACKAGE__->meta->make_immutable;
 
 #------------------------------------------------------------------------------
 1;
@@ -38,7 +59,9 @@ Pinto::Remote::Action::Add - Add a distribution to a the repository
 
 =head1 VERSION
 
-version 0.039
+version 0.046
+
+=for Pod::Coverage BUILD
 
 =head1 AUTHOR
 
@@ -55,3 +78,5 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
+
+
