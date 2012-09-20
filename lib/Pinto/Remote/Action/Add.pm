@@ -11,7 +11,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.046'; # VERSION
+our $VERSION = '0.047'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -59,7 +59,7 @@ Pinto::Remote::Action::Add - Add a distribution to a the repository
 
 =head1 VERSION
 
-version 0.046
+version 0.047
 
 =for Pod::Coverage BUILD
 

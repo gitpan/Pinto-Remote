@@ -1,3 +1,8 @@
+0.047     2012-09-20 14:04:06 America/Los_Angeles
+
+     Updated to be compatible with Pinto-Server 0.050.  If you
+     upgrade Pinto::Remote, you'll need to upgrade the server too.
+
 0.046     2012-08-13 17:24:54 America/Los_Angeles
 
      Major Changes:

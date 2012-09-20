@@ -30,25 +30,25 @@ no_index:
 provides:
   Pinto::Remote:
     file: lib/Pinto/Remote.pm
-    version: 0.046
+    version: 0.047
   Pinto::Remote::Action:
     file: lib/Pinto/Remote/Action.pm
-    version: 0.046
+    version: 0.047
   Pinto::Remote::Action::Add:
     file: lib/Pinto/Remote/Action/Add.pm
-    version: 0.046
+    version: 0.047
   Pinto::Remote::Action::Install:
     file: lib/Pinto/Remote/Action/Install.pm
-    version: 0.046
+    version: 0.047
   Pinto::Remote::Config:
     file: lib/Pinto/Remote/Config.pm
-    version: 0.046
+    version: 0.047
   Pinto::Remote::Logger:
     file: lib/Pinto/Remote/Logger.pm
-    version: 0.046
+    version: 0.047
   Pinto::Remote::Result:
     file: lib/Pinto/Remote/Result.pm
-    version: 0.046
+    version: 0.047
 requires:
   Carp: 0
   File::Temp: 0
@@ -68,4 +68,4 @@ requires:
 resources:
   bugtracker: https://github.com/thaljef/Pinto-Remote/issues
   repository: git://github.com/thaljef/Pinto-Remote.git
-version: 0.046
+version: 0.047

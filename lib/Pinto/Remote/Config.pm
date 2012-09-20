@@ -14,7 +14,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.046'; # VERSION
+our $VERSION = '0.047'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -84,7 +84,7 @@ Pinto::Remote::Config - Internal configuration for Pinto::Remote
 
 =head1 VERSION
 
-version 0.046
+version 0.047
 
 =head1 AUTHOR
 

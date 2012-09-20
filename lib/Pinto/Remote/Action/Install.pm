@@ -14,7 +14,7 @@ use namespace::autoclean;
 
 #------------------------------------------------------------------------------
 
-our $VERSION = '0.046'; # VERSION
+our $VERSION = '0.047'; # VERSION
 
 #------------------------------------------------------------------------------
 
@@ -71,6 +71,17 @@ sub BUILD {
       throw "Your cpanm ($cpanm_version) is too old. Must have $min_cpanm_version or newer";
     }
 
+    # HACK: Prior versions of Pinto had an index file for the default stack
+    # in the modules/ directory at the root of the repository.  So if you
+    # pointed cpanm at the repository root, you'd get stuff from the default
+    # stack.  But this is no longer true.  Now, each request for a file
+    # from the repository must specify a stack.  We could possibly work
+    # around this by sending another request to find out the default stack
+    # is called.  But for now, I'm just going to punt.
+
+    $self->args->{stack}
+      or throw 'Must specify a stack to install from a remote repository';
+
     return $self;
 }
 
@@ -80,8 +91,8 @@ override execute => sub {
     my ($self) = @_;
 
     $self->_do_pull if $self->pull;
-    my $index  = $self->_fetch_index;
-    my $result = $self->_install($index);
+
+    my $result = $self->_install;
 
     return $result;
  };
@@ -102,27 +113,14 @@ sub _do_pull {
 
 #------------------------------------------------------------------------------
 
-sub _fetch_index {
-    my ($self) = @_;
-
-    my $index   = File::Temp->new;
-    my $request = $self->_make_request(name => 'index');
-    my $result  = $self->_send_request(req => $request, out => $index);
-
-    throw 'Failed to fetch the index' if not $result->was_successful;
-
-    return $index;
-}
-
-#------------------------------------------------------------------------------
-
 sub _install {
     my ($self, $index) = @_;
 
     # Wire cpanm to the index
-    my $opts = $self->cpanm_options;
-    $opts->{'mirror-index'} = $index->filename;
-    $opts->{mirror}         = $self->config->root->as_string;
+    my $opts  = $self->cpanm_options;
+    my $stack = $self->args->{stack};
+    $opts->{mirror}        = $self->config->root->as_string . '/' . $stack;
+    $opts->{'mirror-only'} = '';
 
     # Process other cpanm options
     my @cpanm_opts;
@@ -161,7 +159,7 @@ Pinto::Remote::Action::Install - Install packages from the repository
 
 =head1 VERSION
 
-version 0.046
+version 0.047
 
 =for Pod::Coverage BUILD
 

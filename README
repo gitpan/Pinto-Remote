@@ -2,7 +2,7 @@ NAME
     Pinto::Remote - Interact with a remote Pinto repository
 
 VERSION
-    version 0.046
+    version 0.047
 
 SYNOPSIS
     See pinto to create and manage a Pinto repository.
